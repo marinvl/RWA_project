@@ -1,0 +1,171 @@
+{% extends "matches/base.html" %}
+{% block content %}
+	<article class='media content-section'>" +
+		<div class='media-body'>
+			<h2><a class='article-title' href='#'></a>
+				<span class='float-left'>{{ object.r_team.team_name }}</span>
+				<span class='float-right'>{{ object.d_team.team_name }}</span>
+			</h2>
+				<br /><hr />
+				<p class='article-content' style='text-align: center;'>Score: {{ object.r_score }} : {{ object.d_score }}
+					Time: <span id='min'>{{ object.get_min }}</span> : <span id='sec'>{{ object.get_sec }}</span>
+                    <a class='btn btn-outline-info mb-1' onclick='bet({{ match.match_id }},1);'>Bet</a><input type='text' placeholder='20' id='coin'><a class='btn btn-outline-info mb-1' onclick='bet({{ match.match_id }},2);'>Bet</a></p>
+        <script type="text/javascript">
+          sec = document.getElementById("sec").innerHTML;
+          min = document.getElementById("min").innerHTML;
+          function startTime()
+          {
+            window.setInterval("time()",1000);
+          }
+
+          function time()
+          {
+            if((sec != 0 && min != 0) || (min == 0 && sec != 0))
+            {
+              document.getElementById("sec").innerHTML = ++sec;
+              if(sec === 60)
+              {
+                sec = 0;
+                document.getElementById("sec").innerHTML = sec;
+                document.getElementById("min").innerHTML = ++min;
+              }
+            }
+          }
+
+          startTime();
+
+          function startRefresh()
+          {
+            window.setInterval("refresh()", 30000);
+          }
+
+          function refresh()
+          {
+            window.location.href = window.location.href;
+          }
+          startRefresh()
+        </script>
+
+	<div class='float-left'>
+		<div class='float-left'>
+			<table class="table">
+  				<thead>
+    				<tr>
+      					<th scope="col">Picks</th>
+    			</tr>
+  			</thead>
+  			<tbody>
+	   				{%for pick in rpicks%}
+	   				{% if pick.hero.hero_id != 0 %}
+	   					<tr>
+      						<td>{{pick.hero.hero_name}}</td>
+      					</tr>
+      				{% endif %}
+      				{% endfor %}
+  			</tbody>
+			</table>
+		</div>
+		<div class='float-right'>
+			<table class="table">
+  				<thead>
+    				<tr>
+      					<th scope="col">Ban</th>
+    			</tr>
+  			</thead>
+  			<tbody>
+	   				{%for ban in rbans%}
+	   				{% if ban.hero.hero_id != 0 %}
+	   					<tr>
+      						<td>{{ban.hero.hero_name}}</td>
+      					</tr>
+      				{% endif %}
+      				{% endfor %}
+  			</tbody>
+			</table>
+		</div>
+	</div>
+	<div class='float-right'>
+		<div class='float-left'>
+			<table class="table">
+  				<thead>
+    				<tr>
+      					<th scope="col">Picks</th>
+    			</tr>
+  			</thead>
+  			<tbody>
+	   				{%for pick in dpicks%}
+	   				{% if pick.hero.hero_id != 0 %}
+	   					<tr>
+      						<td>{{pick.hero.hero_name}}</td>
+      					</tr>
+      				{% endif %}
+      				{% endfor %}
+  			</tbody>
+			</table>
+		</div>
+		<div class='float-right'>
+			<table class="table">
+  				<thead>
+    				<tr>
+      					<th scope="col">Ban</th>
+    			</tr>
+  			</thead>
+  			<tbody>
+	   				{%for ban in dbans%}
+	   				{% if ban.hero.hero_id != 0 %}
+	   					<tr>
+      						<td>{{ban.hero.hero_name}}</td>
+      					</tr>
+      				{% endif %}
+      				{% endfor %}
+  			</tbody>
+			</table>
+		</div>
+	</div>
+	<table class="table">
+  		<thead>
+    		<tr>
+      			<th scope="col">Hero</th>
+      			<th scope="col">Net Worth</th>
+      			<th scope="col">lvl</th>
+      			<th scope="col">Gold</th>
+      			<th scope="col">K/D/A</th>
+      			<th scope="col">GPM/XPM</th>
+      			<th scope="col">LH/DN</th>
+    		</tr>
+  		</thead>
+  		<tbody>
+  			{% if stats.0.player.player_id != 0 %}
+        {%for stat in stats %}
+	   			<tr>
+    	  			<td>
+                  {%for pick in picks %}
+							      {% if stat.player.player_id == pick.player.player_id%}
+								      {{pick.hero.hero_name}}
+                     {% endif %}
+                  {% endfor %}
+    	  			</td>
+      				<td>
+      					{{stat.net_worth}}
+      				</td>
+      				<td>{{stat.level}}</td>
+      				<td>{{stat.gold}}</td>
+      				<td>{{stat.kills}}/{{stat.assits}}/{{stat.death}}</td>
+      				<td>{{stat.gpm}}/{{stat.xpm}}</td>
+      				<td>{{stat.last_hits}}/{{stat.denies}}</td>
+      			</tr>
+			{% endfor %}
+      {% endif %}
+  		</tbody>
+	</table>
+		</div>
+	</article>
+
+  <script type="text/javascript">
+    function bet(match_id, result)
+    {
+      //console.log(match_id+ " " + result + " " + document.getElementById("coin" + cnt).value);
+      window.location.href = "../../make_bet.html?match_id=" + match_id + "&result=" + result + "&coin=" + document.getElementById("coin").value;
+    }
+  </script>
+{% endblock content %}

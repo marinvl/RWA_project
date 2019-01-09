@@ -1,0 +1,363 @@
+from background_task import background
+import dota2api
+from django.utils import timezone
+from matches.models import Match, Bet, Player, Team, Stats, Hero, Item, Pick, Item_Inventory, Ban
+from math import floor
+
+# -*- coding: utf-8 -*-
+
+# Create your views here.
+
+
+@background(schedule=5)
+def api():
+
+    api = dota2api.Initialise("F92426FF6096299606F88D87F7B2D0AD")
+
+    matches = api.get_live_league_games()
+
+    date_var = timezone.now()
+
+    for game in matches['games']:
+        players = game.get('players')
+        radiant_team = game.get('radiant_team')
+        dire_team = game.get('dire_team')
+        scoreboard = game.get('scoreboard')
+
+        match_id = game.get('match_id')
+        series_type = game.get('series_type')
+        radiant_wins = game.get('radiant_series_wins')
+        dire_wins = game.get('dire_series_wins')
+
+        if dire_team is not None and radiant_team is not None:
+
+            r_team = radiant_team.get('team_name')
+            d_team = dire_team.get('team_name')
+            rid_team = radiant_team.get('team_id')
+            did_team = dire_team.get('team_id')
+            hero_acc = {}
+
+            #print("Team1: " + str(rid_team) + "    " + r_team)
+            (rTeam, rbool) = Team.objects.update_or_create(team_id=rid_team, defaults={'team_name': r_team}, )
+            #print("Team1: " + str(did_team) + "    " + d_team)
+            (dTeam, dBoll) = Team.objects.update_or_create(team_id=did_team, defaults={'team_name': d_team}, )
+
+
+            for player in players:
+                account_id = player.get('account_id')
+                username = player.get('name')
+                hero_id = player.get('hero_id')
+                team = player.get('team')
+
+                hero_acc[str(hero_id)] = account_id   
+
+                #print("Player: " + str(account_id) + "    " + username + "    " + str(team))
+                if team == 0:
+                    Player.objects.update_or_create(player_id=account_id,
+                       defaults={'player_name': username, 'team': rTeam},)
+                if team == 1:
+                    Player.objects.update_or_create(player_id=account_id,
+                       defaults={'player_name': username, 'team': dTeam},)
+
+            match_id = game.get('match_id')
+            spectators = game.get('spectators')
+
+
+
+
+            if scoreboard is not None:
+                radiant = scoreboard.get('radiant')
+                dire = scoreboard.get('dire')
+
+                duration = scoreboard.get('duration')
+                roshan_respawn_timer = scoreboard.get('roshan_respawn_timer')
+
+                if radiant is not None and dire is not None:
+
+                    r_bans = radiant.get('bans')
+                    d_bans = dire.get('bans')
+
+                    r_score = radiant.get('score')
+                    d_score = dire.get('score')
+
+                    r_tower_state = radiant.get('tower_state')
+                    d_tower_state = dire.get('tower_state')
+
+                    r_barracks_state = radiant.get('barracks_state')
+                    d_barracks_state = dire.get('barracks_state')
+
+                    #print("Match: " + str(match_id) + "    " + str(rid_team) + "    " + str(did_team) + "    " +
+                    #  str(spectators) + "    " + str(series_type) + "    " + str(radiant_wins) + "    " +
+                    #  str(dire_wins) + "    " + str(duration) + "    " + str(roshan_respawn_timer) + "    "+
+                    #  str(r_score) + "    " + str(d_score) + "    " + str(r_tower_state) + "    " +
+                    #  str(d_tower_state) + "    " + str(r_barracks_state) + "    " + str(d_barracks_state))
+
+                    (match, mBool) = Match.objects.update_or_create(match_id=match_id,
+                       defaults={'r_team': rTeam, 'd_team': dTeam, 'spectator': spectators,
+                                 'series_type': series_type, 'r_wins': radiant_wins, 'd_wins': dire_wins,
+                                 'duration': duration, 'roshan_respawn_timer': roshan_respawn_timer, 'r_score': r_score,
+                                 'd_score': d_score, 'r_tower_state': r_tower_state, 'd_tower_state': d_tower_state,
+                                 'r_barracks_state': r_barracks_state, 'd_barracks_state': d_barracks_state, 'date': date_var},)
+
+                    if r_bans is not None and d_bans is not None:
+
+                        for ban in r_bans:
+                            hero_id = ban.get('hero_id')
+                            #print("R_Ban: " + str(match_id) + "    " + str(hero_id) + "    " + str(0))
+                            hero = Hero.objects.get(pk=hero_id)
+                            Ban.objects.update_or_create(match_id=match_id, hero=hero,
+                               defaults={'side': 0},)
+
+                        for ban in d_bans:
+                            hero_id = ban.get('hero_id')
+                            #print("D_Ban: " + str(match_id) + "    " + str(hero_id) + "    " + str(1))
+                            hero = Hero.objects.get(pk=hero_id)
+                            Ban.objects.update_or_create(match_id=match_id, hero=hero,
+                               defaults={'side': 1},)
+
+                    r_picks = radiant.get('picks')
+                    d_picks = dire.get('picks')
+
+                    """if r_picks is not None and d_bans is not None:
+
+                        for pick in r_picks:
+                            hero_id = pick.get('hero_id')
+                            account_id = hero_acc.get('hero_id', 0)
+                            print(account_id)
+                            #print("R_Pick: " + str(match_id) + "    " + str(hero_id) + "    " + str(0) + "    " + str(account_id))
+                            hero = Hero.objects.get(pk=hero_id)
+                            rPlayer = Player.objects.get(pk=account_id)
+                            Pick.objects.update_or_create(match_id=match_id, hero=hero,
+                               defaults={'side': 0, 'player': rPlayer},)
+
+                        for pick in d_picks:
+                            hero_id = pick.get('hero_id')
+                            account_id = hero_acc.get('hero_id', 0)
+                            #print("D_Pick: " + str(match_id) + "    " + str(hero_id) + "    " + str(1) + "    " + str(account_id))
+                            hero = Hero.objects.get(pk=hero_id)
+                            dPlayer = Player.objects.get(pk=account_id)
+                            Pick.objects.update_or_create(match_id=match_id, hero=hero,
+                               defaults={'side': 1, 'player': dPlayer},)
+
+                        """
+
+                    r_players = radiant.get('players')
+                    d_players = dire.get('players')
+
+                    for player in r_players:
+
+                        account_id = player.get('account_id')
+                        kills = player.get('kills')
+                        death = player.get('death')
+                        assists = player.get('assists')
+                        last_hits = player.get('last_hits')
+                        denies = player.get('denies')
+                        gold = player.get('gold')
+                        level = player.get('level')
+                        gpm = player.get('gold_per_min')
+                        xpm = player.get('xp_per_min')
+                        ultimate_cooldown = player.get('ultimate_cooldown')
+                        respawn_timer = player.get('respawn_timer')
+                        pos_x = player.get('position_x')
+                        pos_y = player.get('position_y')
+                        net_worth = player.get('net_worth')
+
+                        Rplayer = Player.objects.get(pk=account_id)
+
+                        hero_id = player.get('hero_id')
+                        hero = Hero.objects.get(pk=hero_id)
+                        Pick.objects.update_or_create(match_id=match_id, hero=hero,
+                               defaults={'side': 0, 'player': Rplayer},)
+
+                        #print("\n\n\n\n\n\n" + str(Rplayer) + "\n\n\n\n\n\n")
+
+                        #print("Stats: " + str(match_id) + "    " + str(account_id) + "    " + str(kills) + "    " +
+                        #        str(death) + "    " + str(assists) + "    " + str(last_hits) + "    " + 
+                        #        str(denies) + "    " + str(gold) + "    " + str(level) + "    " +
+                        #        str(gpm) + "    " + str(xpm) + "    " + str(ultimate_cooldown) + "    " +
+                        #        str(respawn_timer) + "    " + str(pos_x) + "    " + str(pos_y) + "    " + str(net_worth) + "    "  + str(0))
+
+                        Stats.objects.update_or_create(match=match, player=Rplayer,
+                           defaults={'kills': kills, 'death': death, 'assits': assists, 'last_hits': last_hits,
+                                     'denies': denies, 'gold': gold, 'level': level, 'gpm': gpm, 'xpm': xpm,
+                                     'ultimate_cooldown': ultimate_cooldown, 'respawn_timer': respawn_timer,
+                                     'pos_x': pos_x, 'pos_y': pos_y, 'net_worth': net_worth, 'side': 0},)
+
+                        item0 = player.get('item0')
+                        item1 = player.get('item1')
+                        item2 = player.get('item2')
+                        item3 = player.get('item3')
+                        item4 = player.get('item4')
+                        item5 = player.get('item5')
+
+                        #print("Item0: " + str(match_id) + "    " + str(account_id) + "    " + str(item0) + "    " + str(0))
+                        item = Item.objects.get(pk=item0)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Rplayer, item=item, defaults={'slot': 0},)
+                        #print("Item1: " + str(match_id) + "    " + str(account_id) + "    " + str(item1) + "    " + str(1))
+                        item = Item.objects.get(pk=item1)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Rplayer, item=item, defaults={'slot': 1},)
+                        #print("Item2: " + str(match_id) + "    " + str(account_id) + "    " + str(item2) + "    " + str(2))
+                        item = Item.objects.get(pk=item2)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Rplayer, item=item, defaults={'slot': 2},)
+                        #print("Item3: " + str(match_id) + "    " + str(account_id) + "    " + str(item3) + "    " + str(3))
+                        item = Item.objects.get(pk=item3)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Rplayer, item=item, defaults={'slot': 3},)
+                        #print("Item4: " + str(match_id) + "    " + str(account_id) + "    " + str(item4) + "    " + str(4))
+                        item = Item.objects.get(pk=item4)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Rplayer, item=item, defaults={'slot': 4},)
+                        #print("Item5: " + str(match_id) + "    " + str(account_id) + "    " + str(item5) + "    " + str(5))
+                        item = Item.objects.get(pk=item5)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Rplayer, item=item, defaults={'slot': 5},)
+
+                    for player in d_players:
+
+                        account_id = player.get('account_id')
+                        kills = player.get('kills')
+                        death = player.get('death')
+                        assists = player.get('assists')
+                        last_hits = player.get('last_hits')
+                        denies = player.get('denies')
+                        gold = player.get('gold')
+                        level = player.get('level')
+                        gpm = player.get('gold_per_min')
+                        xpm = player.get('xp_per_min')
+                        ultimate_cooldown = player.get('ultimate_cooldown')
+                        respawn_timer = player.get('respawn_timer')
+                        pos_x = player.get('position_x')
+                        pos_y = player.get('position_y')
+                        net_worth = player.get('net_worth')
+
+                        Dplayer = Player.objects.get(pk=account_id)
+
+                        hero_id = player.get('hero_id')
+                        hero = Hero.objects.get(pk=hero_id)
+                        Pick.objects.update_or_create(match_id=match_id, hero=hero,
+                               defaults={'side': 1, 'player': Dplayer},)
+
+                        #print("Stats: " + str(match_id) + "    " + str(account_id) + "    " + str(kills) + "    " +
+                        #        str(death) + "    " + str(assists) + "    " + str(last_hits) + "    " + 
+                        #        str(denies) + "    " + str(gold) + "    " + str(level) + "    " +
+                        #        str(gpm) + "    " + str(xpm) + "    " + str(ultimate_cooldown) + "    " +
+                        #        str(respawn_timer) + "    " + str(pos_x) + "    " + str(pos_y) + "    " + str(net_worth) + "    "  + str(1))
+
+                        Stats.objects.update_or_create(match=match, player=Dplayer,
+                           defaults={'kills': kills, 'death': death, 'assits': assists, 'last_hits': last_hits,
+                                     'denies': denies, 'gold': gold, 'level': level, 'gpm': gpm, 'xpm': xpm,
+                                     'ultimate_cooldown': ultimate_cooldown, 'respawn_timer': respawn_timer,
+                                     'pos_x': pos_x, 'pos_y': pos_y, 'net_worth': net_worth, 'side': 1},)
+
+                        item0 = player.get('item0')
+                        item1 = player.get('item1')
+                        item2 = player.get('item2')
+                        item3 = player.get('item3')
+                        item4 = player.get('item4')
+                        item5 = player.get('item5')
+
+                        #print("Item0: " + str(match_id) + "    " + str(account_id) + "    " + str(item0) + "    " + str(0))
+                        item = Item.objects.get(pk=item0)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Dplayer, item=item, defaults={'slot': 0},)
+                        #print("Item1: " + str(match_id) + "    " + str(account_id) + "    " + str(item1) + "    " + str(1))
+                        item = Item.objects.get(pk=item1)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Dplayer, item=item, defaults={'slot': 1},)
+                        #print("Item2: " + str(match_id) + "    " + str(account_id) + "    " + str(item2) + "    " + str(2))
+                        item = Item.objects.get(pk=item2)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Dplayer, item=item, defaults={'slot': 2},)
+                        #print("Item3: " + str(match_id) + "    " + str(account_id) + "    " + str(item3) + "    " + str(3))
+                        item = Item.objects.get(pk=item3)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Dplayer, item=item, defaults={'slot': 3},)
+                        #print("Item4: " + str(match_id) + "    " + str(account_id) + "    " + str(item4) + "    " + str(4))
+                        item = Item.objects.get(pk=item4)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Dplayer, item=item, defaults={'slot': 4},)
+                        #print("Item5: " + str(match_id) + "    " + str(account_id) + "    " + str(item5) + "    " + str(5))
+                        item = Item.objects.get(pk=item5)
+                        Item_Inventory.objects.update_or_create(match_id=match_id, player=Dplayer, item=item, defaults={'slot': 5},)
+    print("API DONE")
+    """dire_team = game.get('dire_team')
+        radiant_team = game.get('radiant_team')
+        match_id_var = game.get('match_id')
+        if dire_team is not None and radiant_team is not None:
+#            print(radiant_team.get('team_name') + "		" + dire_team.get('team_name') + " " + str(match_id_var))
+
+            r_team_var = radiant_team.get('team_name')
+            d_team_var = dire_team.get('team_name')
+
+            scoreboard = game.get('scoreboard')
+            if scoreboard is not None:
+                if scoreboard.get('duration') is not None:
+                    time_var = round(scoreboard.get('duration'))
+                else:
+                    time_var = 0
+
+                if scoreboard.get('radiant') is not None:
+                    scoreboard_radiant = scoreboard.get('radiant')
+                    if scoreboard_radiant.get('score') is not None:
+                        r_score_var = scoreboard_radiant.get('score')
+                    else:
+                        r_score_var = 0
+                else:
+                    r_score_var = 0
+
+                if scoreboard.get('dire') is not None:
+                    scoreboard_dire = scoreboard.get('dire')
+                    if scoreboard_dire.get('score') is not None:
+                        d_score_var = scoreboard_dire.get('score')
+                    else:
+                        d_score_var = 0
+                else:
+                    d_score_var = 0
+            else:
+                time_var = 0
+                r_score_var = 0
+                d_score_var = 0
+
+            print(r_team_var + "     " + r_team_var + " " + str(match_id_var) + " " + str(r_score_var) + " " + str(d_score_var) + str(time_var))
+            #Match.objects.create(match_id=int(match_id_var), r_team=r_team_var, d_team=d_team_var, r_score=int(r_score_var), d_score=int(d_score_var), duration=int(time_var), date=date_var)
+            Match.objects.update_or_create(
+                match_id=int(match_id_var),
+                defaults={'r_team': r_team_var, 'd_team': d_team_var, 'r_score': r_score_var, 'd_score': d_score_var, 'duration': time_var, 'date': date_var},)
+                """
+
+
+@background(schedule=5)
+def paycheck():
+    print("\n\n\nPAYCHECK\n\n\n")
+    date = timezone.now()
+    non_payed_bets = Bet.objects.filter(is_payed=False)
+
+    if non_payed_bets:
+        for bet in non_payed_bets:
+            dt = date - bet.match.date
+            if bet.is_payed is False and floor(dt.seconds / 60) > 5:
+                bet.is_payed = True
+                #print("Uso u bet " + str(floor(dt.seconds / 60)))
+                #print("result: " + str(bet.result) + "  r_score: " + str(bet.match.r_score) + "  d_score: " + str(bet.match.d_score))
+
+                if (bet.result == 1 and bet.match.r_score > bet.match.d_score) or (bet.result == 2 and bet.match.r_score < bet.match.d_score):
+                    #print("Pobjeda")
+                    bet.user.profile.coin += bet.coin * 2
+                    bet.user.profile.save()
+                bet.save()
+
+
+@background(schedule=5)
+def getHeroes():
+    api = dota2api.Initialise("F92426FF6096299606F88D87F7B2D0AD")
+    heroes = api.get_heroes()
+
+    for hero in heroes['heroes']:
+        id = hero.get('id')
+        name = hero.get('localized_name')
+        print(str(id) + "    " + name)
+        Hero.objects.create(hero_id=id, hero_name=name)
+
+
+@background(schedule=5)
+def getItems():
+    api = dota2api.Initialise("F92426FF6096299606F88D87F7B2D0AD")
+    items = api.get_game_items()
+
+    for item in items['items']:
+        id = item.get('id')
+        name = item.get('localized_name')
+        print(str(id) + "    " + name)
+        Item.objects.create(item_id=id, item_name=name)

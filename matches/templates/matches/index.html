@@ -1,0 +1,62 @@
+{% extends "matches/base.html" %}
+	{% load static %}
+{% block content %}
+	<div id="neki_id">
+	</div>
+	<script>cnt=0</script>
+	{% for match in matches %}
+	<div>
+		<article class='media content-section'>" +
+			<div class='media-body'>
+				<h2><a class='article-title' href='#'></a>
+					<a href="{% url 'match-details' match.match_id %}"><span class='float-left'>{{ match.r_team.team_name }}</span>
+					<span class='float-right'>{{ match.d_team.team_name }}</span></a>
+				</h2>
+					<br /><hr />
+					<p class='article-content' style='text-align: center;' id='edit'>Score: {{ match.r_score }} : {{ match.d_score }}
+						Time: <span id='min{{ forloop.counter }}'>{{ match.get_min }}</span> : <span id='sec{{ forloop.counter }}'>{{ match.get_sec }}</span>
+			</div>
+		</article>
+	</div>
+	<script>cnt={{ forloop.counter }}</script>
+	{% endfor %}
+
+	<script>
+          function startTime()
+          {
+            window.setInterval("time()",1000);
+          }
+
+          function time()
+          {
+            for (var i = 1; i <= cnt; i++)
+            {
+            	sec = document.getElementById("sec" + i).innerHTML;
+              	min = document.getElementById("min" + i).innerHTML;
+            	if((sec != 0 && min != 0) || (min == 0 && sec != 0) || (min != 0 && sec==0))
+            	{
+            		document.getElementById("sec" + i).innerHTML = ++sec;
+            		if(sec === 60)
+            		{
+              			document.getElementById("sec" + i).innerHTML = 0;
+              			document.getElementById("min" + i).innerHTML = ++min;
+            		}
+            	}
+          	}
+
+      	  }
+          startTime();
+
+          function startRefresh()
+          {
+            window.setInterval("refresh()", 30000);
+          }
+
+          function refresh()
+          {
+            window.location.href = window.location.href;
+          }
+          startRefresh()
+	</script>
+	<script src="{% static 'matches/script.js' %}"></script>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% block content %}
+	<div>
+		<form method="POST">
+			{% csrf_token %}
+			<div >
+				<button id="btn1" type="submit" hidden>
+					Yes, Delete
+				</button>
+			</div>
+		</form>
+	</div>
+	<script>
+		document.getElementById("btn1").click()
+	</script>
+{% endblock content %}
