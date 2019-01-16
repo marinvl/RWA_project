@@ -41,6 +41,10 @@ class Match(models.Model):
 class Hero(models.Model):
     hero_id = models.IntegerField(primary_key=True)
     hero_name = models.CharField(max_length=100)
+    url_full_portrait = models.URLField(default="null")
+    url_small_portrait = models.URLField(default="null")
+    url_large_portrait = models.URLField(default="null")
+    url_vertical_portrait = models.URLField(default="null")
 
 
 class Player(models.Model):
@@ -71,6 +75,7 @@ class Pick(models.Model):
 class Item(models.Model):
     item_id = models.IntegerField(primary_key=True)
     item_name = models.CharField(max_length=100)
+    url_image = models.URLField(default="null")
 
 
 class Item_Inventory(models.Model):
