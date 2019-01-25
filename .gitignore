@@ -1,0 +1,10 @@
+matches/__pycache__
+matches/migrations
+
+DotaBet/__pycache__
+
+background/migrations
+background/__pycache__
+
+accounts/migrations
+accounts/__pycache__
