@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView
 from matches.models import Settings
-from .models import Profile
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .models import Profile, Notification
 
 # Create your views here.
 
@@ -71,3 +72,16 @@ class LeaderboardListView(ListView):
 
     def get_queryset(self):
         return Profile.objects.all().order_by("-coin")
+
+
+class NotificationsListView(LoginRequiredMixin, ListView):
+    template_name = 'accounts/notifications.html'
+    model = Notification
+    context_object_name = 'notifications'
+
+    def get_queryset(self):
+        notfs =  Notification.objects.filter(user=self.request.user).order_by('-date')
+        for notf in notfs:
+            notf.is_seen = True
+            notf.save()
+        return notfs;

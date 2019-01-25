@@ -31,6 +31,7 @@ urlpatterns = [
     path('profile/', user_views.profile, name="profile"),
     path('search', user_views.SearchListView.as_view(), name="search"),
     path('leaderboard/', user_views.LeaderboardListView.as_view(), name="leaderboard"),
+    path('notifications/', user_views.NotificationsListView.as_view(), name='notifications'),
 
 ]
 
