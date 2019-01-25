@@ -1,0 +1,20 @@
+TODO:
+- U Item_Inventory postavit slot kao primary_key a item kao foreign key
+
+- ubacit slotove u Pick i Ban
+
+- pickove napravit kao banove, odma kad dodu, a ne kad ih igraci odaberu
+
+- premjestit hero_id iz pick, i stavit ga u stats
+
+- dodati life_flag(boolean) u match da imamo dal je game gotov ili je live
+(kad api ubacuje u bazu neka uvijek bude 1(znaci da je live),
+ kad game zavrsi api vise nece dirat tu tablicu, a mi cemo u PAYCHECK-u promjenit
+ tu vrijednost u 0 i onda nam je puno posla olaksano)
+
+- dodati mozda jos neku varijablicu u match, da zapisemo pobjednika
+(0 po defaultu od apia, 1 ako je dobio radiant, 2 ako je dobio dire.
+tko je dobio mozemo rijesit u PAYCHECK-u, kad game zavrsi, ja cu napisat jedan veci if
+koji ce otprilike 99% bit tocan, usporedit cu puno parametara te iz toga zakljucit tko 
+je dobio nije puno posla)
+
