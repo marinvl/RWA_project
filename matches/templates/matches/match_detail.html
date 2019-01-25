@@ -1,165 +1,269 @@
 {% extends "matches/base.html" %}
 {% block content %}
-	<article class='media content-section'>" +
+	<article class='media content-section jumbotron'>
 		<div class='media-body'>
-			<h2><a class='article-title' href='#'></a>
-				<span class='float-left'>{{ object.r_team.team_name }}</span>
-				<span class='float-right'>{{ object.d_team.team_name }}</span>
-			</h2>
-				<br /><hr />
-				<p class='article-content' style='text-align: center;'>Score: {{ object.r_score }} : {{ object.d_score }}
-					Time: <span id='min'>{{ object.get_min }}</span> : <span id='sec'>{{ object.get_sec }}</span>
-                    <a class='btn btn-outline-info mb-1' onclick='bet({{ match.match_id }},1);'>Bet</a><input type='text' placeholder='20' id='coin'><a class='btn btn-outline-info mb-1' onclick='bet({{ match.match_id }},2);'>Bet</a></p>
-        <script type="text/javascript">
-          sec = document.getElementById("sec").innerHTML;
-          min = document.getElementById("min").innerHTML;
-          function startTime()
-          {
-            window.setInterval("time()",1000);
-          }
+      <div class='row'>
+        <div class='col-4'>
+          <h3 class='color-radiant'><span class='float-left'>{{ object.r_team.team_name }}</span></h3>
+        </div>
+        <div class='col-4 pad_left_60'>
+          {% if match.duration <= 900 %}
+           <a class='btn btn-outline-info mb-1' onclick='bet({{ match.match_id }},1);'>Bet</a><input type='text' placeholder='20' id='coin'><a class='btn btn-outline-info mb-1' onclick='bet({{ match.match_id }},2);'>Bet</a>
+           {% endif %}
+        </div>
+        <div class='col-4'>
+          <h3 class='color-dire'><span class='float-right'>{{ object.d_team.team_name }}</span></h3>
+        </div>
+      </div>
+      <hr>
 
-          function time()
-          {
-            if((sec != 0 && min != 0) || (min == 0 && sec != 0))
-            {
-              document.getElementById("sec").innerHTML = ++sec;
-              if(sec === 60)
-              {
-                sec = 0;
-                document.getElementById("sec").innerHTML = sec;
-                document.getElementById("min").innerHTML = ++min;
-              }
-            }
-          }
+      <div class='row'>
+        <div class='col text-center'>
+           {% if match.duration <= 600 %}
+          <h4>Betting is possible only 10 minutes into the game!
+          <br>Make sure you make the right decision on time!</h4>
+            <div class="progress">
+              {% widthratio match.duration 600 100 as w %}
+              <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated" 
+              style="width: {{w}}%;"></div>
+            </div> 
+        {% else %}
+          <h4>Betting for this match is closed!
+          <br>Enjoy the game, and good luck!</h4>
+        {% endif %}
+        </div>
+      </div>
+      <br>
 
-          startTime();
+      <div class="row">
+        <div class="col-5 padding_pick-ban_left">
+          <div class='row'>
+            <div class='col'>
+              {%for pick in rpicks%}
+                {% if pick.hero.hero_id != 0 %}
+                  <img class='img_18 float-left' src="{{pick.hero.url_full_portrait}}">
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col'>
+              {%for ban in rbans%}
+                {% if ban.hero.hero_id != 0 %}
+                  <img class='img_15 float-left' src="{{ban.hero.url_full_portrait}}">
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="col-2 text-center">
+          <p class='article-content'>Score: {{ object.r_score }} : {{ object.d_score }}
+            Time: <span id='min'>{{ object.get_min }}</span> : <span id='sec'>{{ object.get_sec }}</span></p> 
+        </div>
+        <div class="col-5 padding_pick-ban_right">
+          <div class='row'>
+            <div class='col'>
+              {%for pick in dpicks%}
+                {% if pick.hero.hero_id != 0 %}
+                  <img class='img_18 float-right' src="{{pick.hero.url_full_portrait}}">
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col'>
+              {%for ban in dbans%}
+                {% if ban.hero.hero_id != 0 %}
+                  <img class='img_15 float-right' src="{{ban.hero.url_full_portrait}}">
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
 
-          function startRefresh()
-          {
-            window.setInterval("refresh()", 30000);
-          }
-
-          function refresh()
-          {
-            window.location.href = window.location.href;
-          }
-          startRefresh()
-        </script>
-
-	<div class='float-left'>
-		<div class='float-left'>
-			<table class="table">
-  				<thead>
-    				<tr>
-      					<th scope="col">Picks</th>
-    			</tr>
-  			</thead>
-  			<tbody>
-	   				{%for pick in rpicks%}
-	   				{% if pick.hero.hero_id != 0 %}
-	   					<tr>
-      						<td>{{pick.hero.hero_name}}</td>
-      					</tr>
-      				{% endif %}
-      				{% endfor %}
-  			</tbody>
-			</table>
-		</div>
-		<div class='float-right'>
-			<table class="table">
-  				<thead>
-    				<tr>
-      					<th scope="col">Ban</th>
-    			</tr>
-  			</thead>
-  			<tbody>
-	   				{%for ban in rbans%}
-	   				{% if ban.hero.hero_id != 0 %}
-	   					<tr>
-      						<td>{{ban.hero.hero_name}}</td>
-      					</tr>
-      				{% endif %}
-      				{% endfor %}
-  			</tbody>
-			</table>
-		</div>
-	</div>
-	<div class='float-right'>
-		<div class='float-left'>
-			<table class="table">
-  				<thead>
-    				<tr>
-      					<th scope="col">Picks</th>
-    			</tr>
-  			</thead>
-  			<tbody>
-	   				{%for pick in dpicks%}
-	   				{% if pick.hero.hero_id != 0 %}
-	   					<tr>
-      						<td>{{pick.hero.hero_name}}</td>
-      					</tr>
-      				{% endif %}
-      				{% endfor %}
-  			</tbody>
-			</table>
-		</div>
-		<div class='float-right'>
-			<table class="table">
-  				<thead>
-    				<tr>
-      					<th scope="col">Ban</th>
-    			</tr>
-  			</thead>
-  			<tbody>
-	   				{%for ban in dbans%}
-	   				{% if ban.hero.hero_id != 0 %}
-	   					<tr>
-      						<td>{{ban.hero.hero_name}}</td>
-      					</tr>
-      				{% endif %}
-      				{% endfor %}
-  			</tbody>
-			</table>
-		</div>
-	</div>
-	<table class="table">
-  		<thead>
-    		<tr>
-      			<th scope="col">Hero</th>
-      			<th scope="col">Net Worth</th>
-      			<th scope="col">lvl</th>
-      			<th scope="col">Gold</th>
-      			<th scope="col">K/D/A</th>
-      			<th scope="col">GPM/XPM</th>
-      			<th scope="col">LH/DN</th>
-    		</tr>
-  		</thead>
-  		<tbody>
-  			{% if stats.0.player.player_id != 0 %}
-        {%for stat in stats %}
-	   			<tr>
-    	  			<td>
+  <article class='media content-section jumbotron'>
+    <div class='media-body table-padding'>
+      <table class="table table-hover text-white text-center">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Hero</th>
+            <th scope="col">Net Worth</th>
+            <th scope="col">Lvl</th>
+            <th scope="col">Gold</th>
+            <th scope="col">K/D/A</th>
+            <th scope="col">GPM/XPM</th>
+            <th scope="col">LH/DN</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if stats.0.player.player_id != 0 %}
+            {%for stat in stats%}
+              {% if stat.side == 0 %}
+                <tr class="table-success">
+              {% elif stat.side == 1 %}
+                <tr class="table-danger">
+              {% else %}
+                <tr>
+              {% endif %}
                   {%for pick in picks %}
-							      {% if stat.player.player_id == pick.player.player_id%}
-								      {{pick.hero.hero_name}}
-                     {% endif %}
+                    {% if stat.player.player_id == pick.player.player_id and pick.hero.hero_id != 0 %}
+                      <td class='text-left'>
+                      <img src="{{pick.hero.url_small_portrait}}">
+                      {{pick.hero.hero_name}}
+                      </td>
+                      {% endif %}
                   {% endfor %}
-    	  			</td>
-      				<td>
-      					{{stat.net_worth}}
-      				</td>
-      				<td>{{stat.level}}</td>
-      				<td>{{stat.gold}}</td>
-      				<td>{{stat.kills}}/{{stat.assits}}/{{stat.death}}</td>
-      				<td>{{stat.gpm}}/{{stat.xpm}}</td>
-      				<td>{{stat.last_hits}}/{{stat.denies}}</td>
-      			</tr>
-			{% endfor %}
-      {% endif %}
-  		</tbody>
-	</table>
-		</div>
-	</article>
+                  <td>
+                    {{stat.net_worth}}
+                  </td>
+                  <td>{{stat.level}}</td>
+                  <td>{{stat.gold}}</td>
+                  <td>{{stat.kills}}/{{stat.death}}/{{stat.assits}}</td>
+                  <td>{{stat.gpm}}/{{stat.xpm}}</td>
+                  <td>{{stat.last_hits}}/{{stat.denies}}</td>
+                </tr>
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <div class="row">
+    <div class="col-sm">
+      <article class='media content-section jumbotron'>
+        <div class='media-body table-padding'>
+          {%for pick in rpicks%}
+            {% if pick.hero.hero_id != 0 %}
+              <div class="row">
+                <div class="col-sm">
+                  {{pick.player.player_name}}<br>
+                  <img src="{{pick.hero.url_small_portrait}}">
+                </div>
+                <div class="col-sm">
+                  <br>
+                  <table class="table" border=1>
+                    <tr>
+                      {% for item in items %}
+                        {% if item.item_id != 0 %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 0 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 1 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 2 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 3 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 4 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 5 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </tr>
+                  </table>
+                </div>
+              </div><hr>
+            {% endif %}
+          {%endfor%}
+        </div>
+      </article>
+    </div>
+    <div class="col-sm">
+      <article class='media content-section jumbotron'>
+        <div class='media-body table-padding'>
+          {%for pick in dpicks%}
+            {% if pick.hero.hero_id != 0 %}
+              <div class="row">
+                <div class="col-sm">
+                  {{pick.player.player_name}}<br>
+                  <img src="{{pick.hero.url_small_portrait}}">
+                </div>
+                <div class="col-sm">
+                  <br>
+                  <table class="table" border=1>
+                    <tr>
+                      {% for item in items %}
+                        {% if item.item_id != 0 %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 0 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 1 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 2 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 3 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 4 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                          {% if pick.player.player_id == item.player.player_id and item.slot == 5 %}
+                            <td><img src="{{item.item.url_image}}"></td>
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </tr>
+                  </table>
+                </div>
+              </div><hr>
+            {% endif %}
+          {%endfor%}
+        </div>
+      </article>
+    </div>
+  </div>
+
+        
+
+  <script type="text/javascript">
+    sec = document.getElementById("sec").innerHTML;
+    min = document.getElementById("min").innerHTML;
+
+    function startTime()
+    {
+      window.setInterval("time()",1000);
+    }
+
+    function time()
+    {
+      if((sec != 0 && min != 0) || (min == 0 && sec != 0) || (min != 0 && sec == 0))
+      {
+        sec++;
+        if(sec == 60)
+        {
+          sec = 0;
+          min++;
+        }
+        document.getElementById("sec").innerHTML = sec;
+        document.getElementById("min").innerHTML = min;
+      }
+    }
+
+    startTime();
+
+    function startRefresh()
+    {
+      window.setInterval("refresh()", 30000);
+    }
+
+    function refresh()
+    {
+      window.location.href = window.location.href;
+    }
+    startRefresh()
+  </script>
 
   <script type="text/javascript">
     function bet(match_id, result)

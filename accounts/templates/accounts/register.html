@@ -1,11 +1,14 @@
 {% extends "matches/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<div class="content-section">
+<div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+      	<div class="content-section jumbotron">
 		<form method="POST">
 			{% csrf_token %}
-			<fieldset class="form-group">
-				<legend class="border-bottom mb-4">
+			<fieldset class="form-group text-grey">
+				<legend class="border-bottom mb-4 text-white">
 					Join Today
 				</legend>
 				{{ form|crispy }}
@@ -22,6 +25,8 @@
 				Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
 			</small>
 		</div>
-
-	</div>
+		</div>
+    </div>
+    <div class="col"></div>
+</div>
 {% endblock content %}

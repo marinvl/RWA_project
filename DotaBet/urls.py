@@ -30,6 +30,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='accounts/logout.html'), name="logout"),
     path('profile/', user_views.profile, name="profile"),
     path('search', user_views.SearchListView.as_view(), name="search"),
+    path('leaderboard/', user_views.LeaderboardListView.as_view(), name="leaderboard"),
 
 ]
 

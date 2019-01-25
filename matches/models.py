@@ -81,6 +81,7 @@ class Item(models.Model):
 class Item_Inventory(models.Model):
     class Meta:
         unique_together = (('match', 'player', 'item'),)
+
     match = models.ForeignKey(Match, on_delete=None)
     player = models.ForeignKey(Player, on_delete=None)
     item = models.ForeignKey(Item, on_delete=None)

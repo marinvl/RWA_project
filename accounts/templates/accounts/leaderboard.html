@@ -1,0 +1,33 @@
+{% extends "matches/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div>
+        <h1>DOTABET Leaderboard</h1>
+    </div>
+    <article class="media content-section jumbotron">
+        <div class='media-body table-padding'>
+            <table class="table table-hover">
+                <thead>
+                  <tr class="table-primary leaderboard-text-white">
+                    <th scope="col">#</th>
+                    <th scope="col">Real player</th>
+                    <th scope="col">Coins</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for profile in profiles %}
+                    <tr class="table-secondary leaderboard-text-white">
+                        <th scope="row" class="counterCell"></th>
+                        <td>{{ profile.user.username }}</td>
+                        <td>{{ profile.coin }}</td>
+                    </tr>
+                   {% endfor %}
+               </tbody>
+           </table>
+       </div>
+    </article>
+
+
+{% endblock content %}
+

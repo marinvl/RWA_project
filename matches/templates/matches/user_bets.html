@@ -2,14 +2,15 @@
 {% block content %}
 	<h1 class="mb-3"><img class="rounded-circle article-img" src="{{ tags }}">{{ view.kwargs.username }}'s bets</h1>
 	{% for bet in bets %}
-		<article class='media content-section'>
+		<article class='media content-section jumbotron'>
 			<div class='media-body'>
-				<h2><a class='article-title' href='#'></a>
-					<span class='float-left'>{{ bet.match.r_team.team_name }}</span>
-					<span class='float-right'>{{ bet.match.d_team.team_name }}</span>
+				<h2>
+					<a href="{% url 'match-details' bet.match_id %}">
+					<span class='float-left color-radiant'>{{ bet.match.r_team.team_name }}</span>
+					<span class='float-right color-dire'>{{ bet.match.d_team.team_name }}</span></a>
 				</h2>
 					<br /><hr />
-					<p class='article-content' style='text-align: center;'>Score: {{ bet.match.r_score }} : {{ bet.match.d_score }}
+					<p class='article-content leaderboard-text-white' style='text-align: center;'>Score: {{ bet.match.r_score }} : {{ bet.match.d_score }}
 						{% if user.is_authenticated %}{% if bet.user == user %}{% if bet.is_payed == False %}<a class='btn btn-outline-info mb-1' href="{% url 'bet-delete' bet.pk %}">Delete Bet</a>{% endif %}{% endif %}{% endif %}
 					</p>
 			</div>

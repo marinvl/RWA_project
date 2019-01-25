@@ -3,8 +3,9 @@ from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from matches.models import Settings
+from .models import Profile
 
 # Create your views here.
 
@@ -61,3 +62,12 @@ class SearchListView(ListView):
                 return User.objects.filter(username__contains=self.request.GET['q'])
             return render(self.request, 'accounts/search.html')
         return render(self.request, 'accounts/search.html')
+
+
+class LeaderboardListView(ListView):
+    template_name = 'accounts/leaderboard.html'
+    model = Profile
+    context_object_name = 'profiles'
+
+    def get_queryset(self):
+        return Profile.objects.all().order_by("-coin")

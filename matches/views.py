@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Bet, Match, Settings, Stats, Pick, Ban
+from .models import Bet, Match, Settings, Stats, Pick, Ban, Item_Inventory
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -91,11 +91,12 @@ class MatchDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MatchDetailView, self).get_context_data(**kwargs)
         context['picks'] = Pick.objects.filter(match_id=self.kwargs['pk'])
-        context['rpicks'] = Pick.objects.filter(match_id=self.kwargs['pk'], side=0)
         context['stats'] = Stats.objects.filter(match_id=self.kwargs['pk']).order_by('-net_worth')
+        context['rpicks'] = Pick.objects.filter(match_id=self.kwargs['pk'], side=0)
         context['rbans'] = Ban.objects.filter(match_id=self.kwargs['pk'], side=0)
-        context['dbans'] = Ban.objects.filter(match_id=self.kwargs['pk'], side=1)
         context['dpicks'] = Pick.objects.filter(match_id=self.kwargs['pk'], side=1)
+        context['dbans'] = Ban.objects.filter(match_id=self.kwargs['pk'], side=1)
+        context['items'] = Item_Inventory.objects.filter(match_id=self.kwargs['pk']).order_by('slot')
         return context
 
 
@@ -110,3 +111,4 @@ class BetDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             bet.user.profile.save()
             return True
         return False
+

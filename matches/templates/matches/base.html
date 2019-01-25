@@ -16,43 +16,58 @@
 </head>
 <body>
 
-	<header class="site-header">
-	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-	    <div class="container">
-	      <a class="navbar-brand mr-4" href="/">Dota Betting</a>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-	      <span class="navbar-toggler-icon"></span>
-	      </button>
-	      <div class="collapse navbar-collapse" id="navbarToggle">
-	        <div class="navbar-nav mr-auto">
-	          <a class="nav-item nav-link" href="{% url 'matches-home' %}">Home</a>
-	          <a class="nav-item nav-link" href="#">About</a>
-	        </div>
+    <div class="bs-component">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      		<div class="container">
+		        <a class="navbar-brand" href="/">Dota Betting</a>
+		        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+		          <span class="navbar-toggler-icon"></span>
+		        </button>
 
-		    <form class="form-inline my-2 my-lg-0 navbar-collapse" method="GET" action="{% url 'search' %}">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
-		      <button class="btn btn-info" type="submit">Search</button>
-		    </form>
+		        <div class="collapse navbar-collapse" id="navbarColor02">
+		          <ul class="navbar-nav mr-auto">
+		            <li class="nav-item active">
+		              <a class="nav-link" href="{% url 'matches-home' %}"> Home </a>
+		 			</li>
+		            <li class="nav-item">
+		              <a class="nav-link" href="{% url 'leaderboard' %}"> Leaderboard </a>
+		            </li>
+		          </ul>
+		          <form class="form-inline mr-auto my-2 my-lg-0" method="GET" action="{% url 'search' %}">
+		            <input class="form-control mr-sm-2" type="search" aria-label="Search" placeholder="Search" name="q">
+		            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+		          </form>
+		          <ul class="navbar-nav">
+		            {% if user.is_authenticated %}
+					  <li class="nav-item">
+					  	<a class="nav-link" href="{% url 'user-bets' user.username %}">{{ user.profile.coin }}</a>
+					  </li>
+					  <li class="nav-item">
+					  	<a class="nav-link" href="{% url 'profile' %}">
+							<span class="glyphicon glyphicon-user"></span>Profile</a>
+					  </li>
+					  <li class="nav-item">
+					  	<a class="nav-link" href="{% url 'logout' %}">
+					  		<span class="glyphicon glyphicon-log-out"></span>Logout</a>
+					  </li>
+	        	    {% else %}
+	          		  <li class="nav-item">
+	          		  	<a class="nav-link" href="{% url 'login' %}">
+	          		  	<span class="glyphicon glyphicon-log-in"></span>Login</a>
+	          		  </li>
+	          		  <li class="nav-item">
+	          		  	<a class="nav-link" href="{% url 'register' %}">
+	          		  	<span class="glyphicon glyphicon-user"></span>Register</a>
+	          		  </li>
+	          	    {% endif %}
+	          	  </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
 
-	        <!-- Navbar Right Side -->
-	        <div class="navbar-nav">
-	        	{% if user.is_authenticated %}
-					<a class="nav-item nav-link" href="{% url 'user-bets' user.username %}">{{ user.profile.coin }}</a>
-					<a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-					<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-	        	{% else %}
-	          		<a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-	          		<a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-	          	{% endif %}
-	        </div>
-	      </div>
-	    </div>
-	  </nav>
-	</header>
 
 	<main role="main" class="container">
-	  <div class="row">
-	    <div class="col-md-8">
 	      {% if messages %}
 			{% for message in messages %}
 				<div class="alert alert-{{ message.tags }}">
@@ -61,20 +76,8 @@
 			{% endfor %}
 	      {% endif %}
 	      {% block content %}{% endblock %}
-	    </div>
-	    <div class="col-md-4">
-	      <div class="content-section">
-	        <h3>Last bets</h3>
-	          <ul class="list-group">
-	            {% for sbet in Sbets %}
-	            	<li class="list-group-item list-group-item-light">{{sbet.match.r_team.team_name}} - {{sbet.match.d_team.team_name}} by {{sbet.user.username}}</li>
-	          	{% endfor %}
-	          </ul>
-	        </p>
-	      </div>
-	    </div>
-	  </div>
 	</main>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
