@@ -99,7 +99,6 @@
           </tr>
         </thead>
         <tbody>
-          {% if stats.0.player.player_id != 0 %}
             {%for stat in stats%}
               {% if stat.side == 0 %}
                 <tr class="table-success">
@@ -108,14 +107,10 @@
               {% else %}
                 <tr>
               {% endif %}
-                  {%for pick in picks %}
-                    {% if stat.player.player_id == pick.player.player_id and pick.hero.hero_id != 0 %}
                       <td class='text-left'>
-                      <img src="{{pick.hero.url_small_portrait}}">
-                      {{pick.hero.hero_name}}
+                      <img src="{{stat.hero_id.url_small_portrait}}">
+                      {{stat.hero_id.hero_name}}
                       </td>
-                      {% endif %}
-                  {% endfor %}
                   <td>
                     {{stat.net_worth}}
                   </td>
@@ -126,7 +121,6 @@
                   <td>{{stat.last_hits}}/{{stat.denies}}</td>
                 </tr>
             {% endfor %}
-          {% endif %}
         </tbody>
       </table>
     </div>

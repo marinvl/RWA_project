@@ -73,6 +73,9 @@ def api():
                     r_bans = radiant.get('bans')
                     d_bans = dire.get('bans')
 
+                    r_picks = radiant.get('bans')
+                    d_picks = radiant.get('bans')
+
                     r_score = radiant.get('score')
                     d_score = dire.get('score')
 
@@ -97,19 +100,35 @@ def api():
 
                     if r_bans is not None and d_bans is not None:
 
-                        for ban in r_bans:
+                        for index, ban in enumerate(r_bans):
                             hero_id = ban.get('hero_id')
                             #print("R_Ban: " + str(match_id) + "    " + str(hero_id) + "    " + str(0))
                             hero = Hero.objects.get(pk=hero_id)
                             Ban.objects.update_or_create(match_id=match_id, hero=hero,
-                               defaults={'side': 0},)
+                               defaults={'side': 0, 'slot': index},)
 
-                        for ban in d_bans:
+                        for index, ban in enumerate(d_bans):
                             hero_id = ban.get('hero_id')
                             #print("D_Ban: " + str(match_id) + "    " + str(hero_id) + "    " + str(1))
                             hero = Hero.objects.get(pk=hero_id)
                             Ban.objects.update_or_create(match_id=match_id, hero=hero,
-                               defaults={'side': 1},)
+                               defaults={'side': 1, 'slot': index},)
+
+                    if r_picks is not None and d_picks is not None:
+
+                        for index, pick in enumerate(r_picks):
+                            hero_id = pick.get('hero_id')
+                            #print("R_Ban: " + str(match_id) + "    " + str(hero_id) + "    " + str(0))
+                            hero = Hero.objects.get(pk=hero_id)
+                            Pick.objects.update_or_create(match_id=match_id, hero=hero,
+                               defaults={'side': 0, 'slot': index},)
+
+                        for index, pick in enumerate(d_picks):
+                            hero_id = pick.get('hero_id')
+                            #print("D_Ban: " + str(match_id) + "    " + str(hero_id) + "    " + str(1))
+                            hero = Hero.objects.get(pk=hero_id)
+                            Pick.objects.update_or_create(match_id=match_id, hero=hero,
+                               defaults={'side': 1, 'slot': index},)
 
                     r_picks = radiant.get('picks')
                     d_picks = dire.get('picks')
@@ -143,6 +162,7 @@ def api():
                     for player in r_players:
 
                         account_id = player.get('account_id')
+                        hero_id = player.get('hero_id')
                         kills = player.get('kills')
                         death = player.get('death')
                         assists = player.get('assists')
@@ -160,10 +180,7 @@ def api():
 
                         Rplayer = Player.objects.get(pk=account_id)
 
-                        hero_id = player.get('hero_id')
                         hero = Hero.objects.get(pk=hero_id)
-                        Pick.objects.update_or_create(match_id=match_id, hero=hero,
-                               defaults={'side': 0, 'player': Rplayer},)
 
                         #print("\n\n\n\n\n\n" + str(Rplayer) + "\n\n\n\n\n\n")
 
@@ -174,7 +191,7 @@ def api():
                         #        str(respawn_timer) + "    " + str(pos_x) + "    " + str(pos_y) + "    " + str(net_worth) + "    "  + str(0))
 
                         Stats.objects.update_or_create(match=match, player=Rplayer,
-                           defaults={'kills': kills, 'death': death, 'assits': assists, 'last_hits': last_hits,
+                           defaults={'hero_id': hero, 'kills': kills, 'death': death, 'assits': assists, 'last_hits': last_hits,
                                      'denies': denies, 'gold': gold, 'level': level, 'gpm': gpm, 'xpm': xpm,
                                      'ultimate_cooldown': ultimate_cooldown, 'respawn_timer': respawn_timer,
                                      'pos_x': pos_x, 'pos_y': pos_y, 'net_worth': net_worth, 'side': 0},)
@@ -208,6 +225,7 @@ def api():
                     for player in d_players:
 
                         account_id = player.get('account_id')
+                        hero_id = player.get('hero_id')
                         kills = player.get('kills')
                         death = player.get('death')
                         assists = player.get('assists')
@@ -225,10 +243,7 @@ def api():
 
                         Dplayer = Player.objects.get(pk=account_id)
 
-                        hero_id = player.get('hero_id')
                         hero = Hero.objects.get(pk=hero_id)
-                        Pick.objects.update_or_create(match_id=match_id, hero=hero,
-                               defaults={'side': 1, 'player': Dplayer},)
 
                         #print("Stats: " + str(match_id) + "    " + str(account_id) + "    " + str(kills) + "    " +
                         #        str(death) + "    " + str(assists) + "    " + str(last_hits) + "    " + 
@@ -237,7 +252,7 @@ def api():
                         #        str(respawn_timer) + "    " + str(pos_x) + "    " + str(pos_y) + "    " + str(net_worth) + "    "  + str(1))
 
                         Stats.objects.update_or_create(match=match, player=Dplayer,
-                           defaults={'kills': kills, 'death': death, 'assits': assists, 'last_hits': last_hits,
+                           defaults={'hero_id': hero, 'kills': kills, 'death': death, 'assits': assists, 'last_hits': last_hits,
                                      'denies': denies, 'gold': gold, 'level': level, 'gpm': gpm, 'xpm': xpm,
                                      'ultimate_cooldown': ultimate_cooldown, 'respawn_timer': respawn_timer,
                                      'pos_x': pos_x, 'pos_y': pos_y, 'net_worth': net_worth, 'side': 1},)

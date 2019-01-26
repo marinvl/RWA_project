@@ -28,6 +28,8 @@ class Match(models.Model):
     d_tower_state = models.IntegerField()
     r_barracks_state = models.IntegerField()
     d_barracks_state = models.IntegerField()
+    is_over = models.IntegerField(default=0)
+    winner = models.IntegerField(default=0)
 
     date = models.DateTimeField()
 
@@ -60,6 +62,7 @@ class Ban(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     hero = models.ForeignKey(Hero, on_delete=None)
     side = models.IntegerField()
+    slot = models.IntegerField()
 
 
 class Pick(models.Model):
@@ -69,7 +72,7 @@ class Pick(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     hero = models.ForeignKey(Hero, on_delete=None)
     side = models.IntegerField()
-    player = models.ForeignKey(Player, on_delete=None)
+    slot = models.IntegerField()
 
 
 class Item(models.Model):
@@ -94,6 +97,7 @@ class Stats(models.Model):
 
     match = models.ForeignKey(Match, on_delete=None)
     player = models.ForeignKey(Player, on_delete=None)
+    hero_id = models.ForeignKey(Hero, on_delete=None)
     kills = models.IntegerField()
     death = models.IntegerField()
     assits = models.IntegerField()
