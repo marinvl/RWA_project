@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView
 from matches.models import Settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Profile, Notification
+from .models import Profile, Notification, Follower
 
 # Create your views here.
 
@@ -64,6 +64,13 @@ class SearchListView(ListView):
             return render(self.request, 'accounts/search.html')
         return render(self.request, 'accounts/search.html')
 
+    def get_context_data(self, **kwargs):
+        context = super(SearchListView, self).get_context_data(**kwargs)
+        context['following'] = []
+        if self.request.user.is_authenticated:
+            context['following'] = Follower.objects.filter(follower=self.request.user).values_list('id', flat=True)
+        return context
+
 
 class LeaderboardListView(ListView):
     template_name = 'accounts/leaderboard.html'
@@ -80,8 +87,16 @@ class NotificationsListView(LoginRequiredMixin, ListView):
     context_object_name = 'notifications'
 
     def get_queryset(self):
-        notfs =  Notification.objects.filter(user=self.request.user).order_by('-date')
+        notfs = Notification.objects.filter(user=self.request.user).order_by('-date')
         for notf in notfs:
             notf.is_seen = True
             notf.save()
-        return notfs;
+        return notfs
+
+
+@login_required
+def Follow(request, username):
+    user = get_object_or_404(User, username=username)
+    follower = request.user
+    Follower.objects.create(user=user, follower=follower)
+    return redirect('user-bets', username)

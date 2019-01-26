@@ -24,7 +24,13 @@ class Profile(models.Model):
 
 
 class Notification(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     is_seen = models.BooleanField(default=False)
+    date = models.DateTimeField(default=timezone.now)
+
+
+class Follower(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
     date = models.DateTimeField(default=timezone.now)

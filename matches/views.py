@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 # Create your views here.
 
@@ -17,7 +18,7 @@ class MatchListView(ListView):
     context_object_name = 'matches'
 
     def get_queryset(self):
-        time_threshold = datetime.now() - timedelta(minutes=2)
+        time_threshold = timezone.now() - timedelta(minutes=2)
         return Match.objects.filter(date__gt=time_threshold)
 
 """

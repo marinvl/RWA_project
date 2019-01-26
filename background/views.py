@@ -42,7 +42,6 @@ def api():
             #print("Team1: " + str(did_team) + "    " + d_team)
             (dTeam, dBoll) = Team.objects.update_or_create(team_id=did_team, defaults={'team_name': d_team}, )
 
-
             for player in players:
                 account_id = player.get('account_id')
                 username = player.get('name')
@@ -54,16 +53,13 @@ def api():
                 #print("Player: " + str(account_id) + "    " + username + "    " + str(team))
                 if team == 0:
                     Player.objects.update_or_create(player_id=account_id,
-                       defaults={'player_name': username, 'team': rTeam},)
+                        defaults={'player_name': username, 'team': rTeam},)
                 if team == 1:
                     Player.objects.update_or_create(player_id=account_id,
-                       defaults={'player_name': username, 'team': dTeam},)
+                        defaults={'player_name': username, 'team': dTeam},)
 
             match_id = game.get('match_id')
             spectators = game.get('spectators')
-
-
-
 
             if scoreboard is not None:
                 radiant = scoreboard.get('radiant')
