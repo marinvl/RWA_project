@@ -73,8 +73,8 @@ def api():
                     r_bans = radiant.get('bans')
                     d_bans = dire.get('bans')
 
-                    r_picks = radiant.get('bans')
-                    d_picks = radiant.get('bans')
+                    r_picks = radiant.get('picks')
+                    d_picks = dire.get('picks')
 
                     r_score = radiant.get('score')
                     d_score = dire.get('score')
