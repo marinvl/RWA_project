@@ -19,7 +19,7 @@ from accounts import views as user_views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-from background.views import api, paycheck, getHeroes, getItems
+from background.views import api, gameOver, paycheck, getHeroes, getItems
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,7 +32,6 @@ urlpatterns = [
     path('search', user_views.SearchListView.as_view(), name="search"),
     path('leaderboard/', user_views.LeaderboardListView.as_view(), name="leaderboard"),
     path('notifications/', user_views.NotificationsListView.as_view(), name='notifications'),
-    path('follow/<str:username>/', user_views.Follow, name='follow'),
 
 ]
 
@@ -42,4 +41,6 @@ if settings.DEBUG:
 #getItems()
 #getHeroes()
 api(repeat=30, repeat_until=None)
+gameOver(repeat=300)
 paycheck(repeat=300, repeat_until=None)
+
