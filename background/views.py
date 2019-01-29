@@ -287,7 +287,7 @@ def api():
         radiant_team = game.get('radiant_team')
         match_id_var = game.get('match_id')
         if dire_team is not None and radiant_team is not None:
-#            print(radiant_team.get('team_name') + "		" + dire_team.get('team_name') + " " + str(match_id_var))
+#            print(radiant_team.get('team_name') + "        " + dire_team.get('team_name') + " " + str(match_id_var))
 
             r_team_var = radiant_team.get('team_name')
             d_team_var = dire_team.get('team_name')

@@ -3,9 +3,9 @@
 /*/////////////////////////////////////////////////////////////////////////////////*/
 
 body {
-  color: #aaa;
-  background-color: #272B30;
-  margin-top: 5rem;
+	color: #aaa;
+	background-color: #222222;/*background-color: #272B30;*/
+	margin-top: 5rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -37,9 +37,9 @@ a:active {
 /*/////////////////////////////////////////////////////////////////////////////////*/
 /* CSS u NAVIGATION BAR-U (treba ovog pola pobrisat) */
 /*/////////////////////////////////////////////////////////////////////////////////*/
-
-.bg-steel {
-  background-color: #5f788a;
+.bg-grey {
+	background-color: #222222 !important;
+	border-bottom: 1px dashed #800000;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -57,7 +57,7 @@ a:active {
 .content-section {
   background: #ffffff;
   padding: 10px 20px;
-  border: 1px solid #dddddd;
+  border: 1px dashed #800000;
   border-radius: 3px;
   margin-bottom: 20px;
 }
