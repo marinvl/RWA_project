@@ -1,3 +1,7 @@
+/*/////////////////////////////////////////////////////////////////////////////////*/
+/* OSNOVNI CSS */
+/*/////////////////////////////////////////////////////////////////////////////////*/
+
 body {
   color: #aaa;
   background-color: #272B30;
@@ -11,6 +15,28 @@ h1, h2, h3, h4, h5, h6 {
 ul {
   margin: 0;
 }
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
+
+
+
+/*/////////////////////////////////////////////////////////////////////////////////*/
+/* CSS u NAVIGATION BAR-U (treba ovog pola pobrisat) */
+/*/////////////////////////////////////////////////////////////////////////////////*/
 
 .bg-steel {
   background-color: #5f788a;
@@ -72,30 +98,57 @@ a.article-title:hover {
   vertical-align: middle;
 }
 
-.account-img {
-  height: 125px;
-  width: 125px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-}
-
 .account-heading {
   font-size: 2.5rem;
 }
 
-.leaderboard-text-white{
-  color: #ffffff;
+.jumbotron {
+  background-color: #1c1e22;
+  border-radius: 0.3rem;
 }
 
-.leaderboard-text-black{
-  color: #000000;
-}
+/*/////////////////////////////////////////////////////////////////////////////////*/
+/* TABLE CSS */
+/*/////////////////////////////////////////////////////////////////////////////////*/
 
 .table-padding {
   padding-top: 50px;
   padding-right: 30px;
   padding-bottom: 20px;
   padding-left: 30px;
+}
+.table-padding_leadreboard {
+  padding-top: 50px;
+  padding-right: 100px;
+  padding-bottom: 20px;
+  padding-left: 100px;
+}
+
+.items-td_size {
+  width:90px; 
+  height:70px;
+  max-width:90px;
+  min-width:90px; 
+  max-height:70px; 
+  min-height:70px;
+}
+
+.pick-td_size {
+  width:120px; 
+  height:90px;
+  max-width:120px;
+  min-width:120px; 
+  max-height:90px; 
+  min-height:90px;
+}
+
+.ban-td_size {
+  width:80px; 
+  height:50px;
+  max-width:80px;
+  min-width:80px; 
+  max-height:50px; 
+  min-height:50px;
 }
 
 table {
@@ -104,85 +157,6 @@ table {
 .counterCell:before {              
   content: counter(tableCount); 
   counter-increment: tableCount; 
-}
-
-.img_150 {
-  width: 150%;
-}
-.img_90 {
-  width: 90%;
-}
-.img_75 {
-  width: 75%;
-}
-.img_60 {
-  width: 60%;
-}
-.img_50 {
-  width: 50%;
-}
-.img_35 {
-  width: 35%;
-}
-.img_25 {
-  width: 25%;
-}
-.img_18 {
-  width: 18%;
-}
-.img_15 {
-  width: 15%;
-}
-.img_10 {
-  width: 10%;
-}
-
-.pad_left_60 {
-  padding-left: 50px;
-}
-
-.padding_pick-ban_left {
-  padding-left: 30px;
-  padding-bottom: 20px;
-}
-.padding_pick-ban_right {
-  padding-bottom: : 20px;
-  padding-right: 30px;
-}
-.padding_info_betting {
-  padding-bottom: : 20px;
-  padding-top: 20px;
-  padding-left: 50px
-  padding-right: 50px;
-}
-
-.text-center {
-  text-align: center;
-}
-.text-left {
-  text-align: left;
-}
-.text-right {
-  text-align: right;
-}
-
-
-/* OVO JE ZA BOOTSTRAP */
-
-.jumbotron {
-  background-color: #1c1e22;
-  border-radius: 0.3rem;
-}
-.text-grey {
-  color: #b4b4b4;
-}
-
-.color-radiant {
-  color: #006600;
-}
-
-.color-dire {
-  color: #990000;
 }
 
 .table-danger,
@@ -224,3 +198,124 @@ table {
 .table-hover .table-secondary:hover, .table-hover .table-secondary:hover > th, .table-hover .table-secondary:hover > td {
   background-color: #6e757b;
 }
+
+
+/*/////////////////////////////////////////////////////////////////////////////////*/
+/* IMAGE CSS */
+/*/////////////////////////////////////////////////////////////////////////////////*/
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+.leaderboard-img {
+  height: 50px;
+  width: 50px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+}
+
+.drafting_phase-img {
+  height: 550px;
+  background-image: url("https://img3.goodfon.com/wallpaper/nbig/9/f7/dota-dota2-radiant-dire-logo.jpg");
+  background-size:     100% 100%;
+  background-repeat:   no-repeat;
+  background-position: center center;
+}
+
+.img_hero_next2items {
+  width:135px; 
+  height:80px;
+  max-width:135px;
+  min-width:135px; 
+  max-height:80px; 
+  min-height:80px;
+}
+
+.img_150 {
+  width: 150%;
+}
+.img_90 {
+  width: 90%;
+}
+.img_75 {
+  width: 75%;
+}
+.img_60 {
+  width: 60%;
+}
+.img_50 {
+  width: 50%;
+}
+.img_35 {
+  width: 35%;
+}
+.img_25 {
+  width: 25%;
+}
+.img_18 {
+  width: 18%;
+}
+.img_15 {
+  width: 15%;
+}
+.img_10 {
+  width: 10%;
+}
+
+
+/*/////////////////////////////////////////////////////////////////////////////////*/
+/* TEXT CSS */
+/*/////////////////////////////////////////////////////////////////////////////////*/
+
+.text-white{
+  color: #ffffff;
+}
+
+.text-black{
+  color: #000000;
+}
+
+.pad_left_60 {
+  padding-left: 50px;
+}
+
+.padding_pick-ban_left {
+  padding-left: 30px;
+  padding-bottom: 20px;
+}
+.padding_pick-ban_right {
+  padding-bottom: : 20px;
+  padding-right: 30px;
+}
+.padding_info_betting {
+  padding-bottom: : 20px;
+  padding-top: 20px;
+  padding-left: 50px
+  padding-right: 50px;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.text-grey {
+  color: #b4b4b4;
+}
+
+.color-radiant {
+  color: #009900;
+}
+
+.color-dire {
+  color: #dd0000;
+}
+

@@ -7,7 +7,7 @@
           <h3 class='color-radiant'><span class='float-left'>{{ object.r_team.team_name }}</span></h3>
         </div>
         <div class='col-4 pad_left_60'>
-          {% if match.duration <= 900 %}
+          {% if match.duration <= 600 and match.is_over == 0 %}
            <a class='btn btn-outline-info mb-1' onclick='bet({{ match.match_id }},1);'>Bet</a><input type='text' placeholder='20' id='coin'><a class='btn btn-outline-info mb-1' onclick='bet({{ match.match_id }},2);'>Bet</a>
            {% endif %}
         </div>
@@ -19,206 +19,495 @@
 
       <div class='row'>
         <div class='col text-center'>
-           {% if match.duration <= 600 %}
-          <h4>Betting is possible only 10 minutes into the game!
-          <br>Make sure you make the right decision on time!</h4>
+          {% if match.duration == 0 %}
+            <h4>DRAFTING PHASE...</h4>
+          {% elif match.duration <= 600 and match.is_over == 0 %}
+            <h4>Betting is possible only 10 minutes into the game!
+            <br>Make sure you make the right decision on time!</h4>
             <div class="progress">
               {% widthratio match.duration 600 100 as w %}
               <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated" 
               style="width: {{w}}%;"></div>
             </div> 
-        {% else %}
-          <h4>Betting for this match is closed!
-          <br>Enjoy the game, and good luck!</h4>
-        {% endif %}
+          {% elif match.duration and match.is_over == 0 %}
+            <h4>Betting for this match is closed!
+            <br>Enjoy the game, and good luck!</h4>
+          {% else %}
+            <h4>Betting for this match is closed!
+            <br>Game ended!</h4>
+          {% endif %}
         </div>
       </div>
       <br>
 
-      <div class="row">
-        <div class="col-5 padding_pick-ban_left">
-          <div class='row'>
-            <div class='col'>
-              {%for pick in rpicks%}
-                {% if pick.hero.hero_id != 0 %}
-                  <img class='img_18 float-left' src="{{pick.hero.url_full_portrait}}">
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-          <div class='row'>
-            <div class='col'>
-              {%for ban in rbans%}
-                {% if ban.hero.hero_id != 0 %}
-                  <img class='img_15 float-left' src="{{ban.hero.url_full_portrait}}">
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-        <div class="col-2 text-center">
-          <p class='article-content'>Score: {{ object.r_score }} : {{ object.d_score }}
-            Time: <span id='min'>{{ object.get_min }}</span> : <span id='sec'>{{ object.get_sec }}</span></p> 
-        </div>
-        <div class="col-5 padding_pick-ban_right">
-          <div class='row'>
-            <div class='col'>
-              {%for pick in dpicks%}
-                {% if pick.hero.hero_id != 0 %}
-                  <img class='img_18 float-right' src="{{pick.hero.url_full_portrait}}">
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-          <div class='row'>
-            <div class='col'>
-              {%for ban in dbans%}
-                {% if ban.hero.hero_id != 0 %}
-                  <img class='img_15 float-right' src="{{ban.hero.url_full_portrait}}">
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </article>
-
-  <article class='media content-section jumbotron'>
-    <div class='media-body table-padding'>
-      <table class="table table-hover text-white text-center">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Hero</th>
-            <th scope="col">Net Worth</th>
-            <th scope="col">Lvl</th>
-            <th scope="col">Gold</th>
-            <th scope="col">K/D/A</th>
-            <th scope="col">GPM/XPM</th>
-            <th scope="col">LH/DN</th>
-          </tr>
-        </thead>
-        <tbody>
-            {%for stat in stats%}
-              {% if stat.side == 0 %}
-                <tr class="table-success">
-              {% elif stat.side == 1 %}
-                <tr class="table-danger">
-              {% else %}
-                <tr>
-              {% endif %}
-                      <td class='text-left'>
-                      <img src="{{stat.hero_id.url_small_portrait}}">
-                      {{stat.hero_id.hero_name}}
+      {% if match.duration == 0 %}
+            <div class='col drafting_phase-img'>
+              <div class='row'>
+                <div class='col-2 text-left'>
+                  <table class='float-left'>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in rpicks %}
+                          {% if pick.slot == 0 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
                       </td>
-                  <td>
-                    {{stat.net_worth}}
-                  </td>
-                  <td>{{stat.level}}</td>
-                  <td>{{stat.gold}}</td>
-                  <td>{{stat.kills}}/{{stat.death}}/{{stat.assits}}</td>
-                  <td>{{stat.gpm}}/{{stat.xpm}}</td>
-                  <td>{{stat.last_hits}}/{{stat.denies}}</td>
+                    </tr>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in rpicks %}
+                          {% if pick.slot == 1 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in rpicks %}
+                          {% if pick.slot == 2 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in rpicks %}
+                          {% if pick.slot == 3 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in rpicks %}
+                          {% if pick.slot == 4 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                  </table>
+                  
+                </div>
+                <div class='col-8'>
+                  
+                </div>
+                <div class='col-2 text-right'>
+                  <table class='float-right'>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in dpicks %}
+                          {% if pick.slot == 0 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in dpicks %}
+                          {% if pick.slot == 1 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in dpicks %}
+                          {% if pick.slot == 2 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in dpicks %}
+                          {% if pick.slot == 3 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class='pick-td_size'>
+                        {% for pick in dpicks %}
+                          {% if pick.slot == 4 %}
+                            <img class='img_90' src="{{pick.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-6 text-left'><br>
+                  <table class='float-left'>
+                    <tr>
+                      <td class='ban-td_size'>
+                        {% for ban in rbans %}
+                          {% if ban.slot == 0 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in rbans %}
+                          {% if ban.slot == 1 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in rbans %}
+                          {% if ban.slot == 2 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in rbans %}
+                          {% if ban.slot == 3 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in rbans %}
+                          {% if ban.slot == 4 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in rbans %}
+                          {% if ban.slot == 5 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                  </table>
+                  
+                </div>
+                <div class='col-6 text-right'><br>
+                  <table class='float-right'>
+                    <tr>
+                      <td class='ban-td_size'>
+                        {% for ban in dbans %}
+                          {% if ban.slot == 0 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in dbans %}
+                          {% if ban.slot == 1 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in dbans %}
+                          {% if ban.slot == 2 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in dbans %}
+                          {% if ban.slot == 3 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in dbans %}
+                          {% if ban.slot == 4 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td class='ban-td_size'>
+                        {% for ban in dbans %}
+                          {% if ban.slot == 5 %}
+                            <img class='img_90' src="{{ban.hero.url_full_portrait}}">
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      {% else %}
+
+            <div class="row">
+              <div class="col-5 padding_pick-ban_left">
+                <div class='row'>
+                  <div class='col'>
+                    {%for pick in rpicks%}
+                      {% if pick.hero.hero_id != 0 %}
+                        <img class='img_18 float-left' src="{{pick.hero.url_full_portrait}}">
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class='row'>
+                  <div class='col'>
+                    {%for ban in rbans%}
+                      {% if ban.hero.hero_id != 0 %}
+                        <img class='img_15 float-left' src="{{ban.hero.url_full_portrait}}">
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="col-2 text-center">
+                {% if match.duration == 0 or match.is_over == 1 %}
+                  <p class='article-content'>Score: {{ object.r_score }} : {{ object.d_score }}
+                    Time: {{ object.get_min }} : {{ object.get_sec }}</p>
+                {% else %}
+                  <p class='article-content'>Score: {{ object.r_score }} : {{ object.d_score }}
+                    Time: <span id='min'>{{ object.get_min }}</span> : <span id='sec'>{{ object.get_sec }}</span></p>
+                {% endif %}
+              </div>
+              <div class="col-5 padding_pick-ban_right">
+                <div class='row'>
+                  <div class='col'>
+                    {%for pick in dpicks%}
+                      {% if pick.hero.hero_id != 0 %}
+                        <img class='img_18 float-right' src="{{pick.hero.url_full_portrait}}">
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class='row'>
+                  <div class='col'>
+                    {%for ban in dbans%}
+                      {% if ban.hero.hero_id != 0 %}
+                        <img class='img_15 float-right' src="{{ban.hero.url_full_portrait}}">
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class='media content-section jumbotron'>
+          <div class='media-body table-padding'>
+            <table class="table table-hover text-white text-center">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Hero</th>
+                  <th scope="col">Net Worth</th>
+                  <th scope="col">Lvl</th>
+                  <th scope="col">Gold</th>
+                  <th scope="col">K/D/A</th>
+                  <th scope="col">GPM/XPM</th>
+                  <th scope="col">LH/DN</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </article>
+              </thead>
+              <tbody>
+                  {%for stat in stats%}
+                    {% if stat.side == 0 %}
+                      <tr class="table-success">
+                    {% elif stat.side == 1 %}
+                      <tr class="table-danger">
+                    {% else %}
+                      <tr>
+                    {% endif %}
+                            <td class='text-left'>
+                            <img src="{{stat.hero_id.url_small_portrait}}">
+                            {{stat.hero_id.hero_name}}
+                            </td>
+                        <td>
+                          {{stat.net_worth}}
+                        </td>
+                        <td>{{stat.level}}</td>
+                        <td>{{stat.gold}}</td>
+                        <td>{{stat.kills}}/{{stat.death}}/{{stat.assits}}</td>
+                        <td>{{stat.gpm}}/{{stat.xpm}}</td>
+                        <td>{{stat.last_hits}}/{{stat.denies}}</td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </article>
 
-  <div class="row">
-    <div class="col-sm">
-      <article class='media content-section jumbotron'>
-        <div class='media-body table-padding'>
-          {%for pick in rpicks%}
-            {% if pick.hero.hero_id != 0 %}
-              <div class="row">
-                <div class="col-sm">
-                  {{pick.player.player_name}}<br>
-                  <img src="{{pick.hero.url_small_portrait}}">
-                </div>
-                <div class="col-sm">
-                  <br>
-                  <table class="table" border=1>
-                    <tr>
-                      {% for item in items %}
-                        {% if item.item_id != 0 %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 0 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 1 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 2 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 3 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 4 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 5 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                        {% endif %}
-                      {% endfor %}
-                    </tr>
-                  </table>
-                </div>
-              </div><hr>
-            {% endif %}
-          {%endfor%}
+        <div class="row">
+          <div class="col-sm">
+            <article class='media content-section jumbotron'>
+              <div class='media-body'>
+                {%for stat in stats%}
+                  {% if stat.hero.hero_id != 0  and stat.side == 0 %}
+                    <hr><h5 class='text-center'>{{stat.player.player_name}}</h5>
+                    <div class="row">
+                      <div class="col-sm text-center"><br><br>
+                        <img class='img_hero_next2items' src="{{stat.hero_id.url_full_portrait}}">
+                      </div>
+                      <div class="col-sm text-center">
+                        <br>
+                        <table border=3>
+                          <tr>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 0 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 1 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 2 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 3 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 4 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 5 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div><hr>
+                  {% endif %}
+                {%endfor%}
+              </div>
+            </article>
+          </div>
+          <div class="col-sm">
+            <article class='media content-section jumbotron'>
+              <div class='media-body'>
+                {%for stat in stats %}
+                  {% if stat.hero.hero_id != 0 and stat.side == 1 %}
+                    <hr><h5 class='text-center'>{{stat.player.player_name}}</h5>
+                    <div class="row">
+                      <div class="col-sm text-center"><br><br>
+                        <img class='img_hero_next2items' src="{{stat.hero_id.url_full_portrait}}">
+                      </div>
+                      <div class="col-sm text-center">
+                        <br>
+                        <table border=3>
+                          <tr>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 0 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 1 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 2 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 3 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 4 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td class='items-td_size'>
+                              {% for item in items %}
+                                {% if item.item_id != 0 %}
+                                  {% if stat.player.player_id == item.player.player_id and item.slot == 5 %}
+                                    <img src="{{item.item.url_image}}">
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div><hr>
+                  {% endif %}
+                {%endfor%}
+              </div>
+            </article>
+          </div>
         </div>
-      </article>
-    </div>
-    <div class="col-sm">
-      <article class='media content-section jumbotron'>
-        <div class='media-body table-padding'>
-          {%for pick in dpicks%}
-            {% if pick.hero.hero_id != 0 %}
-              <div class="row">
-                <div class="col-sm">
-                  {{pick.player.player_name}}<br>
-                  <img src="{{pick.hero.url_small_portrait}}">
-                </div>
-                <div class="col-sm">
-                  <br>
-                  <table class="table" border=1>
-                    <tr>
-                      {% for item in items %}
-                        {% if item.item_id != 0 %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 0 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 1 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 2 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 3 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 4 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                          {% if pick.player.player_id == item.player.player_id and item.slot == 5 %}
-                            <td><img src="{{item.item.url_image}}"></td>
-                          {% endif %}
-                        {% endif %}
-                      {% endfor %}
-                    </tr>
-                  </table>
-                </div>
-              </div><hr>
-            {% endif %}
-          {%endfor%}
-        </div>
-      </article>
-    </div>
-  </div>
-
+    {% endif %}
         
 
   <script type="text/javascript">
@@ -232,19 +521,18 @@
 
     function time()
     {
-      if((sec != 0 && min != 0) || (min == 0 && sec != 0) || (min != 0 && sec == 0))
+      sec++;
+      if(sec == 60)
       {
-        sec++;
-        if(sec == 60)
-        {
-          sec = 0;
-          min++;
-        }
-        document.getElementById("sec").innerHTML = sec;
-        document.getElementById("min").innerHTML = min;
+        sec = 0;
+        min++;
       }
+      document.getElementById("sec").innerHTML = sec;
+      document.getElementById("min").innerHTML = min;
     }
+  </script>
 
+  <script type="text/javascript">
     startTime();
 
     function startRefresh()
