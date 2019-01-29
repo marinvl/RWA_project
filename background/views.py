@@ -96,7 +96,7 @@ def api():
                                  'series_type': series_type, 'r_wins': radiant_wins, 'd_wins': dire_wins,
                                  'duration': duration, 'roshan_respawn_timer': roshan_respawn_timer, 'r_score': r_score,
                                  'd_score': d_score, 'r_tower_state': r_tower_state, 'd_tower_state': d_tower_state,
-                                 'r_barracks_state': r_barracks_state, 'd_barracks_state': d_barracks_state, 'date': date_var},)
+                                 'r_barracks_state': r_barracks_state, 'd_barracks_state': d_barracks_state, 'date': date_var, 'is_over': 0, 'winner': 0},)
 
                     if r_bans is not None and d_bans is not None:
 
@@ -287,7 +287,7 @@ def api():
         radiant_team = game.get('radiant_team')
         match_id_var = game.get('match_id')
         if dire_team is not None and radiant_team is not None:
-#            print(radiant_team.get('team_name') + "		" + dire_team.get('team_name') + " " + str(match_id_var))
+#            print(radiant_team.get('team_name') + "        " + dire_team.get('team_name') + " " + str(match_id_var))
 
             r_team_var = radiant_team.get('team_name')
             d_team_var = dire_team.get('team_name')
@@ -337,17 +337,35 @@ def paycheck():
 
     if non_payed_bets:
         for bet in non_payed_bets:
-            dt = date - bet.match.date
-            if bet.is_payed is False and floor(dt.seconds / 60) > 5:
+            if bet.is_payed is False and bet.match.winner != 0:
                 bet.is_payed = True
+
                 #print("Uso u bet " + str(floor(dt.seconds / 60)))
                 #print("result: " + str(bet.result) + "  r_score: " + str(bet.match.r_score) + "  d_score: " + str(bet.match.d_score))
 
-                if (bet.result == 1 and bet.match.r_score > bet.match.d_score) or (bet.result == 2 and bet.match.r_score < bet.match.d_score):
+                if (bet.result == bet.match.winner):
                     #print("Pobjeda")
                     bet.user.profile.coin += bet.coin * 2
                     bet.user.profile.save()
                 bet.save()
+
+
+@background(schedule=5)
+def gameOver():
+    date = timezone.now()
+    non_over_matches = Match.objects.filter(winner=0)
+
+    if non_over_matches:
+        for match in non_over_matches:
+            dt = date - match.date
+            if floor(dt.seconds / 60) > 10:
+                match.is_over = 1
+                if match.r_score > match.d_score:
+                    match.winner = 1
+                else:
+                    match.winner = 2
+                match.save()
+                print("\nGAMEOVER\n")
 
 
 @background(schedule=5)

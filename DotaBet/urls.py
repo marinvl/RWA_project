@@ -19,7 +19,7 @@ from accounts import views as user_views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-from background.views import api, paycheck, getHeroes, getItems
+from background.views import api, gameOver, paycheck, getHeroes, getItems
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,4 +42,5 @@ if settings.DEBUG:
 #getItems()
 #getHeroes()
 api(repeat=30, repeat_until=None)
+gameOver(repeat=300)
 paycheck(repeat=300, repeat_until=None)

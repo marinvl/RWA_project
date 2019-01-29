@@ -1,45 +1,108 @@
 {% extends "matches/base.html" %}
 {% block content %}
 	<h1 class="mb-3"><img class="rounded-circle article-img" src="{{ tags }}">{{ view.kwargs.username }}'s bets</h1>
-	{% for bet in bets %}
-		<article class='media content-section jumbotron'>
-			<div class='media-body'>
-				<div class='row'>
-			        <div class='col-5 float-left'>
-			            <h3 class='color-radiant text-left'>
-			          	    {{ bet.match.r_team.team_name }}
-			            </h3>
-			        </div>
-			        <div class='col-2 text-center'>
-		            	{% if user.is_authenticated %}
-		            		{% if bet.user == user %}
-		            			{% if bet.is_payed == False and bet.match.duration < 600 %}
-		            				<a class='btn btn-outline-info' href="{% url 'bet-delete' bet.pk %}">Delete Bet</a>
-		            			{% endif %}
-		            		{% endif %}
-		            	{% endif %}
-			        </div>
-			        <div class='col-5 float-right'>
-			            <h3 class='color-dire text-right'>
-			          	    {{ bet.match.d_team.team_name }}
-			            </h3>
-			        </div>
-			    </div>
-				<hr/>
-				<a href="{% url 'match-details' bet.match_id %}">
-					<p class='article-content text-white text-center'>Score: {{ bet.match.r_score }} : {{ bet.match.d_score }}<br>Time: {{ bet.match.get_min }} : {{ bet.match.get_sec }}
-					</p>
-					{% if bet.match.is_over == 1 and bet.match.winner == bet.result %}
-						<h2 class='text-center table-success'>{{bet.coin}}</h2>
-					{% elif bet.match.is_over == 1 and bet.match.winner != bet.result %}
-						<h2 class='text-center table-danger'>{{bet.coin}}</h2>
-					{% else %}
-						<h2 class='text-center'>{{bet.coin}}</h2>
-					{% endif %}
-				</a>
-			</div>
-		</article>
+	
+	<article class="media content-section jumbotron">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+		<canvas id="myChart" width="400" height="200"></canvas>
 		
+		<script>
+		var ctx = document.getElementById("myChart").getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: [
+				{% for bet in bets %}
+					{% if bet.result == 1%}
+					"{{ bet.match.r_team.team_name  }}",
+					{% else %}
+					"{{ bet.match.d_team.team_name  }}",
+					{% endif %}
+				{% endfor %}
+				],
+				datasets: [{
+					label: 'Coins',
+					data: [
+					{% for bet in bets %}
+						{% if  bet.match.winner == bet.result %}
+							+{{bet.coin}},
+						{% else %}
+							-{{bet.coin}},
+						{% endif %}
+					{% endfor %}
+					],
+					backgroundColor: [
+						{% for bet in bets %}
+							{% if  bet.match.winner == bet.result %}
+								"#002000",
+							{% else %}
+								'#200000',
+							{% endif %}
+						{% endfor %}
+					],
+					borderColor: [
+						{% for bet in bets %}
+							{% if  bet.match.winner == bet.result %}
+								"#00F000",
+							{% else %}
+								'#F00000',
+							{% endif %}
+						{% endfor %}
+					],
+					borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero:true
+						}
+					}]
+				}
+			}
+		});
+		</script>
+	</article>
+	
+	{% for bet in bets %}
+	<article class='media content-section jumbotron'>
+		<div class='media-body'>
+			<div class='row'>
+				<div class='col-5 float-left'>
+					<h3 class='color-radiant text-left'>
+					{{ bet.match.r_team.team_name }}
+					</h3>
+				</div>
+				<div class='col-2 text-center'>
+					{% if user.is_authenticated %}
+						{% if bet.user == user %}
+							{% if bet.is_payed == False and bet.match.duration < 600 %}
+							<a class='btn btn-outline-info' href="{% url 'bet-delete' bet.pk %}">Delete Bet</a>
+							{% endif %}
+		            	{% endif %}
+		            {% endif %}
+				</div>
+				<div class='col-5 float-right'>
+					<h3 class='color-dire text-right'>
+					{{ bet.match.d_team.team_name }}
+					</h3>
+				</div>
+			</div>
+			<hr/>
+			<a href="{% url 'match-details' bet.match_id %}">
+				<p class='article-content text-white text-center'>Score: {{ bet.match.r_score }} : {{ bet.match.d_score }}<br>Time: {{ bet.match.get_min }} : {{ bet.match.get_sec }}
+				</p>
+				{% if bet.match.is_over == 1 and bet.match.winner == bet.result %}
+				<h2 class='text-center table-success'>{{bet.coin}}</h2>
+				{% elif bet.match.is_over == 1 and bet.match.winner != bet.result %}
+				<h2 class='text-center table-danger'>{{bet.coin}}</h2>
+				{% else %}
+				<h2 class='text-center'>{{bet.coin}}</h2>
+				{% endif %}
+			</a>
+		</div>
+	</article>		
 	{% endfor %}
 	
 	{% if is_paginated %}
@@ -61,4 +124,6 @@
 			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
 		{% endif %}
 	{% endif %}
+	
+	
 {% endblock content %}
