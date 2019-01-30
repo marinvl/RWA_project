@@ -89,6 +89,7 @@ class UserBetListView(ListView):
         context = super(UserBetListView, self).get_context_data(**kwargs)
         context['tags'] = user.profile.image.url
         context['last10'] = Bet.objects.filter(user=user).order_by('-date')[:10]
+        context['current'] = user.profile.coin
         return context
 
 
