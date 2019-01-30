@@ -46,6 +46,17 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'user-bets' user.username %}">{{ user.profile.coin }}</a>
 						</li>
+						{% if cnt_meses == 0 %}
+						<li class="nav-item">
+						  	<a class="nav-link" href="{% url 'inbox' %}">
+							<span class="glyphicon glyphicon-user"></span>Inbox</a>
+						</li>
+						{% else %}
+					  	<li class="nav-item">
+						  	<a class="nav-link" href="{% url 'inbox' %}">
+							<span class="glyphicon glyphicon-user"></span>Inbox({{cnt_meses}})</a>
+						</li>
+						{% endif %}
 						{% if cnt_notifcats == 0 %}
 						<li class="nav-item">
 						  	<a class="nav-link" href="{% url 'notifications' %}">

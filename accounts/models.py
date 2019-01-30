@@ -34,3 +34,12 @@ class Follower(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
     date = models.DateTimeField(default=timezone.now)
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    is_seen = models.BooleanField(default=False)
+    date = models.DateTimeField(default=timezone.now)

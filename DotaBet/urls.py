@@ -32,6 +32,10 @@ urlpatterns = [
     path('search', user_views.SearchListView.as_view(), name="search"),
     path('leaderboard/', user_views.LeaderboardListView.as_view(), name="leaderboard"),
     path('notifications/', user_views.NotificationsListView.as_view(), name='notifications'),
+    path('follow/<str:username>/', user_views.Follow, name='follow'),
+    path('messages/', user_views.Inbox.as_view(), name='inbox'),
+    path('new_message/<int:receiver_id>/', user_views.new_message, name='new-message'),
+    path('read_message/<int:pk>/', user_views.ReadMessage.as_view(), name='read-message'),
 
 ]
 
@@ -43,4 +47,3 @@ if settings.DEBUG:
 api(repeat=30, repeat_until=None)
 gameOver(repeat=300)
 paycheck(repeat=300, repeat_until=None)
-

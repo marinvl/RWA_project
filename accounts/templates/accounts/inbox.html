@@ -1,0 +1,12 @@
+{% extends "matches/base.html" %}
+{% load static %}
+
+{% block content %}
+    
+
+    {% for mes in meses %}
+      {{mes.title}}<a href="{% url 'read-message' mes.id %}">Read</a><br />
+    {% endfor %}
+
+
+{% endblock content %}
