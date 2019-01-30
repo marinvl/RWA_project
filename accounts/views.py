@@ -63,7 +63,7 @@ class SearchListView(ListView):
     def get_queryset(self):
         if self.request.GET:
             if self.request.GET:
-                return User.objects.filter(username__contains=self.request.GET.get('q'))
+                return User.objects.filter(username__contains=self.request.GET.get('q')).order_by('username')
             return render(self.request, 'accounts/search.html')
         return render(self.request, 'accounts/search.html')
 
