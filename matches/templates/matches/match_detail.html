@@ -495,52 +495,52 @@
 	</div>
 	{% endif %}
 
-  <script type="text/javascript">
-	{% if not match.is_over %}
-    sec = document.getElementById("sec").innerHTML;
-    min = document.getElementById("min").innerHTML;
-	{% endif %}
-
-    function startTime()
-    {
+	<script type="text/javascript">
 		{% if not match.is_over %}
-		window.setInterval("time()",1000);
+		sec = document.getElementById("sec").innerHTML;
+		min = document.getElementById("min").innerHTML;
 		{% endif %}
-    }
 
-    function time()
-    {
-      sec++;
-      if(sec == 60)
-      {
-        sec = 0;
-        min++;
-      }
-      document.getElementById("sec").innerHTML = sec;
-      document.getElementById("min").innerHTML = min;
-    }
-  </script>
+		function startTime()
+		{
+			{% if not match.is_over %}
+			window.setInterval("time()",1000);
+			{% endif %}
+		}
 
-  <script type="text/javascript">
-    startTime();
+		function time()
+		{
+		  sec++;
+		  if(sec == 60)
+		  {
+			sec = 0;
+			min++;
+		  }
+		  document.getElementById("sec").innerHTML = sec;
+		  document.getElementById("min").innerHTML = min;
+		}
+	</script>
 
-    function startRefresh()
-    {
-      window.setInterval("refresh()", 30000);
-    }
+	<script type="text/javascript">
+		startTime();
 
-    function refresh()
-    {
-      window.location.href = window.location.href;
-    }
-    startRefresh()
-  </script>
+		function startRefresh()
+		{
+		  window.setInterval("refresh()", 30000);
+		}
 
-  <script type="text/javascript">
-    function bet(match_id, result)
-    {
-      //console.log(match_id+ " " + result + " " + document.getElementById("coin" + cnt).value);
-      window.location.href = "../../make_bet.html?match_id=" + match_id + "&result=" + result + "&coin=" + document.getElementById("coin").value;
-    }
-  </script>
+		function refresh()
+		{
+		  window.location.href = window.location.href;
+		}
+		startRefresh()
+	</script>
+
+	<script type="text/javascript">
+		function bet(match_id, result)
+		{
+		  //console.log(match_id+ " " + result + " " + document.getElementById("coin" + cnt).value);
+		  window.location.href = "../../make_bet.html?match_id=" + match_id + "&result=" + result + "&coin=" + document.getElementById("coin").value;
+		}
+	</script>
 {% endblock content %}
