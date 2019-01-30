@@ -38,7 +38,7 @@ a:active {
 /* CSS u NAVIGATION BAR-U (treba ovog pola pobrisat) */
 /*/////////////////////////////////////////////////////////////////////////////////*/
 .bg-grey {
-	background-color: #222222 !important;
+	background-color: #1c1e22 !important;
 	border-bottom: 1px dashed #800000;
 }
 
@@ -107,6 +107,8 @@ a.article-title:hover {
   border-radius: 0.3rem;
 }
 
+.btn
+
 /*/////////////////////////////////////////////////////////////////////////////////*/
 /* TABLE CSS */
 /*/////////////////////////////////////////////////////////////////////////////////*/
@@ -124,6 +126,10 @@ a.article-title:hover {
   padding-left: 100px;
 }
 
+.item_table {
+	border: 3px groove black;
+}
+
 .items-td_size {
   width:90px; 
   height:70px;
@@ -131,6 +137,10 @@ a.article-title:hover {
   min-width:90px; 
   max-height:70px; 
   min-height:70px;
+  
+  border: 1px groove black;
+  padding: 0px 0px 0px 0px;
+  margin:  0px 0px 0px 0px;
 }
 
 .pick-td_size {
@@ -223,6 +233,8 @@ table {
   background-size:     100% 100%;
   background-repeat:   no-repeat;
   background-position: center center;
+
+  border-radius: 1%;
 }
 
 .img_hero_next2items {
@@ -263,6 +275,29 @@ table {
 }
 .img_10 {
   width: 10%;
+}
+
+.img_pick_immersive {
+	width: 90%;
+	filter: brightness(120%);
+	border: 1px groove black;
+	border-radius: 10%;
+}
+
+.img_pick {
+	width: 18%;
+	filter: brightness(120%);
+	border: 1px groove black;
+	border-radius: 10%;
+}
+.img_ban {
+	width: 15%;
+	filter: sepia(100%);
+	border: 1px groove black;
+	border-radius: 10%;
+}
+.img_ban:hover {
+	filter: sepia(0%);
 }
 
 
