@@ -77,7 +77,7 @@
 	{% endif %}
 	
 	<article class="media content-section jumbotron">
-		<div class='media-body padding_info_betting'>
+		<div class='media-body padding_graph'>
 			<div class='row'>
 				<div class='col'>
 					<h2 class='text-center'>{{ view.kwargs.username }}'s last bets</h2><br>
@@ -89,49 +89,50 @@
 					<canvas id="myChart" width="400" height="200"></canvas>
 					
 					<script>
+					var diff = [
+						{% for bet in last10 %}
+							{% if bet.match.winner == bet.result %}
+								{{bet.coin}},
+							{% else %}
+								-{{bet.coin}},
+							{% endif %}
+						{% endfor %}
+					];
+
+					var coins = [];
+					coins[diff.length] = {{current}};
 					
+					for(i = diff.length-1; i >= 0; i--){
+						coins[i] = coins[i+1] - diff[diff.length-i-1];
+					}
+
+					console.log(coins);
+
+					var color;
+					if(coins[0] < coins[diff.length-1]){
+						color = 'rgba(0, 255, 0, 0.4)';
+					}else{
+						color = 'rgba(255, 0, 0, 0.4)';
+					}
+
 					var ctx = document.getElementById("myChart").getContext('2d');
 					var myChart = new Chart(ctx, {
 						type: 'line',
 						data: {
 							labels: [
-							{% for bet in last10 %}
-								{% if bet.result == 1%}
-								"{{ bet.match.r_team.team_name  }}",
-								{% else %}
-								"{{ bet.match.d_team.team_name  }}",
-								{% endif %}
-							{% endfor %}
+								'start',
+								{% for bet in last10 %}
+									{% if bet.result == 1%}
+									"{{ bet.match.r_team.team_name  }}",
+									{% else %}
+									"{{ bet.match.d_team.team_name  }}",
+									{% endif %}
+								{% endfor %}
 							],
 							datasets: [{
 								label: 'Coins',
-								data: [
-								{% for bet in last10 %}
-									{% if  bet.match.winner == bet.result %}
-										+{{bet.coin}},
-									{% else %}
-										-{{bet.coin}},
-									{% endif %}
-								{% endfor %}
-								],
-								backgroundColor: [
-									{% for bet in last10 %}
-										{% if  bet.match.winner == bet.result %}
-											"#002000",
-										{% else %}
-											'#200000',
-										{% endif %}
-									{% endfor %}
-								],
-								borderColor: [
-									{% for bet in last10 %}
-										{% if  bet.match.winner == bet.result %}
-											"#00F000",
-										{% else %}
-											'#F00000',
-										{% endif %}
-									{% endfor %}
-								],
+								data: coins,
+								backgroundColor: color,
 								borderWidth: 1
 							}]
 						},
