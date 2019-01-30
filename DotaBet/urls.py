@@ -45,5 +45,5 @@ if settings.DEBUG:
 #getItems()
 #getHeroes()
 api(repeat=30, repeat_until=None)
-gameOver(repeat=300)
+gameOver(repeat=60)
 paycheck(repeat=300, repeat_until=None)

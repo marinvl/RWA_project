@@ -329,7 +329,7 @@ def api():
                 """
 
 
-@background(schedule=5)
+@background(schedule=10)
 def paycheck():
     print("\n\n\nPAYCHECK\n\n\n")
     date = timezone.now()
@@ -358,7 +358,7 @@ def gameOver():
     if non_over_matches:
         for match in non_over_matches:
             dt = date - match.date
-            if floor(dt.seconds / 60) > 10:
+            if floor(dt.seconds / 60) > 5:
                 match.is_over = 1
                 if match.r_score > match.d_score:
                     match.winner = 1
