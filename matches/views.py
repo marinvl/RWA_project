@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime, timedelta
 from django.utils import timezone
+from accounts.models import Notification, Follower
 
 # Create your views here.
 
@@ -56,8 +57,12 @@ def make_bet(request):
         request.user.profile.coin -= coins
         request.user.profile.save()
 
-        Bet.objects.create(user=request.user, match=Match.objects.get(match_id=match_id), result=result, coin=coins)
+        bet = Bet.objects.create(user=request.user, match=Match.objects.get(match_id=match_id), result=result, coin=coins)
         messages.success(request, f'Your bet has been made!')
+
+        followers = Follower.objects.filter(user=request.user)
+        for follower in followers:
+            Notification.objects.create(user=follower.follower, text=request.user.username + " made a bet on match " + bet.match.r_team.team_name + " - " + bet.match.d_team.team_name)
     else:
         messages.warning(request, f'There has been an error making your bet!')
 

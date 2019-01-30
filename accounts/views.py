@@ -71,7 +71,8 @@ class SearchListView(ListView):
         context = super(SearchListView, self).get_context_data(**kwargs)
         context['following'] = []
         if self.request.user.is_authenticated:
-            context['following'] = Follower.objects.filter(follower=self.request.user).values_list('id', flat=True)
+            context['following'] = Follower.objects.filter(follower=self.request.user).values_list('user_id', flat=True)
+        print(context['following'])
         return context
 
 
@@ -103,6 +104,15 @@ def Follow(request, username):
     user = get_object_or_404(User, username=username)
     follower = request.user
     Follower.objects.create(user=user, follower=follower)
+    Notification.objects.create(user=user, text="You have been followed by " + follower.username)
+    return redirect('user-bets', username)
+
+
+@login_required
+def Unfollow(request, username):
+    user = get_object_or_404(User, username=username)
+    follower = request.user
+    Follower.objects.filter(user=user, follower=follower).delete()
     return redirect('user-bets', username)
 
 
