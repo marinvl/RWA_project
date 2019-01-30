@@ -91,11 +91,11 @@ class NotificationsListView(LoginRequiredMixin, ListView):
     context_object_name = 'notifications'
 
     def get_queryset(self):
-        notfs = Notification.objects.filter(user=self.request.user).order_by('-date')
+        notfs = Notification.objects.filter(user=self.request.user, is_seen=0).order_by('-date')
         notfs2 = notfs
-        for notf in notfs:
+        """for notf in notfs:
             notf.is_seen = True
-            notf.save()
+            notf.save()"""
         return notfs2
 
 
@@ -177,3 +177,11 @@ class ReadMessage(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         message.is_seen = 1
         message.save()
         return message
+
+
+@login_required
+def SeeNotification(request, notification_id):
+    notification = get_object_or_404(Notification, pk=notification_id)
+    notification.is_seen = 1
+    notification.save()
+    return redirect('notifications')

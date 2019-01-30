@@ -4,11 +4,18 @@
 	  	<div class="media-body padding_notification">
 	  		<h2>Your notifications:</h2>
 	  		{% for notification in notifications %}
-		  		<div class="alert alert-dismissible link-primary">
-				  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  		<div class="alert alert-dismissible link-primary">	
+				  <button onclick="redirect({{notification.id}});" class="close" data-dismiss="alert">&times;</button>
 				  <strong>{{ notification.text }}</strong>
 				</div>
 			{% endfor %}
 		</div>
 	</div>
+
+	<script>
+		function redirect(notification_id)
+		{
+			window.location.href="../see_notifications/" + notification_id + "/";
+		}
+	</script>
 {% endblock content %}
