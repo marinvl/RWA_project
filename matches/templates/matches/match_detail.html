@@ -24,15 +24,15 @@
 				{% if match.duration == 0 %}
 					<h4>DRAFTING PHASE...</h4>
 				{% elif match.duration <= 600 and match.is_over == 0 %}
-					<h4>Betting is possible only within first 10 minutes of a match!
+					<h4>Betting is only possible within first 10 minutes of a match!
 					<br>Make sure you make the right decision on time!</h4>
 					<div class="progress">
 						{% widthratio match.duration 600 100 as w %}
 						<div class="progress-bar bg-dark progress-bar-striped progress-bar-animated" style="width: {{w}}%;"></div>
 					</div> 
 				{% elif match.duration and match.is_over == 0 %}
-					<h4>Betting for this match is closed!
-					<br>Enjoy the game, and good luck!</h4>
+					<h4>Betting for this match is closed.
+					<br>Enjoy the game and good luck!</h4>
 				{% else %}
 					<div class='row'>
 						<div class='col-3'>
@@ -332,24 +332,24 @@
 				<tbody>
 				{%for stat in stats%}
 					{% if stat.side == 0 %}
-					<tr class="bg_color-radiant">
+					<tr class="bg-radiant">
 					{% elif stat.side == 1 %}
-					<tr class="bg_color-dire">
+					<tr class="bg-dire">
 					{% else %}
 					<tr>
 					{% endif %}
-						<td class='text-left'>
-							<img src="{{stat.hero_id.url_small_portrait}}">
+						<td class="text-left td-border-black">
+							<img class="img-hero-table" src="{{stat.hero_id.url_small_portrait}}">
 							{{stat.hero_id.hero_name}}
 						</td>
-						<td>
+						<td class="td-border-black">
 							{{stat.net_worth}}
 						</td>
-						<td>{{stat.level}}</td>
-						<td>{{stat.gold}}</td>
-						<td>{{stat.kills}}/{{stat.death}}/{{stat.assits}}</td>
-						<td>{{stat.gpm}}/{{stat.xpm}}</td>
-						<td>{{stat.last_hits}}/{{stat.denies}}</td>
+						<td class="td-border-black">{{stat.level}}</td>
+						<td class="td-border-black">{{stat.gold}}</td>
+						<td class="td-border-black">{{stat.kills}}/{{stat.death}}/{{stat.assits}}</td>
+						<td class="td-border-black">{{stat.gpm}}/{{stat.xpm}}</td>
+						<td class="td-border-black">{{stat.last_hits}}/{{stat.denies}}</td>
 					</tr>
 					{% endfor %}
 				</tbody>
@@ -366,53 +366,53 @@
 					<hr><h5 class='text-center'>{{stat.player.player_name}}</h5>
 					<div class="row">
 						<div class="col-sm text-center"><br><br>
-							<img class='img_hero_next2items' src="{{stat.hero_id.url_full_portrait}}">
+							<img class='img-hero-invertory' src="{{stat.hero_id.url_full_portrait}}" title="{{stat.hero_id.hero_name}}">
 						</div>
 						<div class="col-sm text-center">
 							<br>
-							<table border=3>
+							<table class="table-invertory">
 								<tr>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 0 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 1 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 2 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
 								</tr>
 								<tr>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 3 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 4 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 5 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
@@ -434,53 +434,53 @@
 					<hr><h5 class='text-center'>{{stat.player.player_name}}</h5>
 					<div class="row">
 						<div class="col-sm text-center"><br><br>
-							<img class='img_hero_next2items' src="{{stat.hero_id.url_full_portrait}}">
+							<img class='img-hero-invertory' src="{{stat.hero_id.url_full_portrait}}" title="{{stat.hero_id.hero_name}}">
 						</div>
 						<div class="col-sm text-center">
 							<br>
-							<table border=3>
+							<table class="table-invertory">
 								<tr>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 0 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 1 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 2 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
 								</tr>
 								<tr>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 3 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 4 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
-									<td class='items-td_size'>
+									<td class='table-invertory-cell'>
 									{% for item in items %}
 										{% if item.item_id != 0 and stat.player.player_id == item.player.player_id and item.slot == 5 %}
-										<img src="{{item.item.url_image}}">
+										<img src="{{item.item.url_image}}" title="{{item.item.item_name}}">
 										{% endif %}
 									{% endfor %}
 									</td>
