@@ -347,9 +347,9 @@ def paycheck():
                     #print("Pobjeda")
                     bet.user.profile.coin += bet.coin * 2
                     bet.user.profile.save()
-                    Notification.objects.create(user=bet.user, text="You have won " + bet.coin*2 + " coins on match " + bet.match.r_team.team_name + " - " + bet.match.d_team.team_name)
+                    Notification.objects.create(user=bet.user, text="You have won " + str(bet.coin*2) + " coins on match " + str(bet.match.r_team.team_name) + " - " + str(bet.match.d_team.team_name))
                 else:
-                    Notification.objects.create(user=bet.user, text="You have lost " + bet.coin + " coins on match " + bet.match.r_team.team_name + " - " + bet.match.d_team.team_name)
+                    Notification.objects.create(user=bet.user, text="You have lost " + str(bet.coin) + " coins on match " + str(bet.match.r_team.team_name) + " - " + str(bet.match.d_team.team_name))
                 bet.save()
 
 
