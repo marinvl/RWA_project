@@ -21,19 +21,19 @@
 			
 			<div class='row'>
 				<div class='col text-center'>
-					{% if match.duration == 0 %}
+				{% if match.duration == 0 %}
 					<h4>DRAFTING PHASE...</h4>
-					{% elif match.duration <= 600 and match.is_over == 0 %}
+				{% elif match.duration <= 600 and match.is_over == 0 %}
 					<h4>Betting is possible only within first 10 minutes of a match!
 					<br>Make sure you make the right decision on time!</h4>
 					<div class="progress">
 						{% widthratio match.duration 600 100 as w %}
 						<div class="progress-bar bg-dark progress-bar-striped progress-bar-animated" style="width: {{w}}%;"></div>
 					</div> 
-					{% elif match.duration and match.is_over == 0 %}
+				{% elif match.duration and match.is_over == 0 %}
 					<h4>Betting for this match is closed!
 					<br>Enjoy the game, and good luck!</h4>
-					{% else %}
+				{% else %}
 					<div class='row'>
 						<div class='col-3'>
 							{% if match.winner == 1 %}
@@ -50,7 +50,7 @@
 							{% endif %}
 						</div>
 					</div>
-					{% endif %}
+				{% endif %}
 				</div>
 			</div>
 			<br>
