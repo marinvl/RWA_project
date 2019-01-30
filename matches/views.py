@@ -83,6 +83,7 @@ class UserBetListView(ListView):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         context = super(UserBetListView, self).get_context_data(**kwargs)
         context['tags'] = user.profile.image.url
+        context['last10'] = Bet.objects.filter(user=user).order_by('-date')[:10]
         return context
 
 
@@ -91,12 +92,11 @@ class MatchDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(MatchDetailView, self).get_context_data(**kwargs)
-        context['picks'] = Pick.objects.filter(match_id=self.kwargs['pk'])
         context['stats'] = Stats.objects.filter(match_id=self.kwargs['pk']).order_by('-net_worth')
-        context['rpicks'] = Pick.objects.filter(match_id=self.kwargs['pk'], side=0)
-        context['rbans'] = Ban.objects.filter(match_id=self.kwargs['pk'], side=0)
-        context['dpicks'] = Pick.objects.filter(match_id=self.kwargs['pk'], side=1)
-        context['dbans'] = Ban.objects.filter(match_id=self.kwargs['pk'], side=1)
+        context['rpicks'] = Pick.objects.filter(match_id=self.kwargs['pk'], side=0).order_by('slot')
+        context['rbans'] = Ban.objects.filter(match_id=self.kwargs['pk'], side=0).order_by('slot')
+        context['dpicks'] = Pick.objects.filter(match_id=self.kwargs['pk'], side=1).order_by('slot')
+        context['dbans'] = Ban.objects.filter(match_id=self.kwargs['pk'], side=1).order_by('slot')
         context['items'] = Item_Inventory.objects.filter(match_id=self.kwargs['pk']).order_by('slot')
         return context
 
