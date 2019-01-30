@@ -263,7 +263,7 @@
 						<div class='col'>
 						{%for pick in rpicks%}
 							{% if pick.hero.hero_id != 0 %}
-							<img class='img_18 float-left' src="{{pick.hero.url_full_portrait}}">
+							<img class='img_pick float-left' src="{{pick.hero.url_full_portrait}}">
 							{% endif %}
 						{% endfor %}
 						</div>
@@ -272,7 +272,7 @@
 						<div class='col'>
 						{%for ban in rbans%}
 							{% if ban.hero.hero_id != 0 %}
-							<img class='img_15 float-left' src="{{ban.hero.url_full_portrait}}">
+							<img class='img_ban float-left' src="{{ban.hero.url_full_portrait}}">
 							{% endif %}
 						{% endfor %}
 						</div>
@@ -292,7 +292,7 @@
 						<div class='col'>
 						{%for pick in dpicks%}
 							{% if pick.hero.hero_id != 0 %}
-							<img class='img_18 float-right' src="{{pick.hero.url_full_portrait}}">
+							<img class='img_pick float-right' src="{{pick.hero.url_full_portrait}}">
 							{% endif %}
 						{% endfor %}
 						</div>
@@ -301,7 +301,7 @@
 						<div class='col'>
 						{%for ban in dbans%}
 							{% if ban.hero.hero_id != 0 %}
-							<img class='img_15 float-right' src="{{ban.hero.url_full_portrait}}">
+							<img class='img_ban float-right' src="{{ban.hero.url_full_portrait}}">
 							{% endif %}
 						{% endfor %}
 						</div>
