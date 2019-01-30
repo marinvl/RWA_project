@@ -2,6 +2,7 @@ from background_task import background
 import dota2api
 from django.utils import timezone
 from matches.models import Match, Bet, Player, Team, Stats, Hero, Item, Pick, Item_Inventory, Ban
+from accounts.models import Notification
 from math import floor
 
 # -*- coding: utf-8 -*-
@@ -342,11 +343,13 @@ def paycheck():
 
                 #print("Uso u bet " + str(floor(dt.seconds / 60)))
                 #print("result: " + str(bet.result) + "  r_score: " + str(bet.match.r_score) + "  d_score: " + str(bet.match.d_score))
-
                 if (bet.result == bet.match.winner):
                     #print("Pobjeda")
                     bet.user.profile.coin += bet.coin * 2
                     bet.user.profile.save()
+                    Notification.objects.create(user=bet.user, text="You have won " + bet.coin*2 + " coins on match " + bet.match.r_team.team_name + " - " + bet.match.d_team.team_name)
+                else:
+                    Notification.objects.create(user=bet.user, text="You have lost " + bet.coin + " coins on match " + bet.match.r_team.team_name + " - " + bet.match.d_team.team_name)
                 bet.save()
 
 
