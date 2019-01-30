@@ -34,9 +34,11 @@
 		          <h2>Following:</h2>
 		        </div>
 		        <div class="list-group">
-					  <a href="#" class="list-group-item list-group-item-action link-primary text-white">
-					  	Mrkimed045
+		        	{% for following in followings %}
+					  <a href="{% url 'user-bets' following.user.username %}" class="list-group-item list-group-item-action link-primary text-white">
+					  	{{following.user.username}}
 					  </a>
+					 {% endfor %}
 				</div>
 		    </div>
 		</div>

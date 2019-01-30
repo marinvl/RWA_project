@@ -39,10 +39,12 @@ def profile(request):
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
+        followings = Follower.objects.filter(follower=request.user).order_by('-date')
 
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'followings': followings,
     }
     return render(request, 'accounts/profile.html', context)
 
