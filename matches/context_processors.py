@@ -1,5 +1,5 @@
 from .models import Bet
-from accounts.models import Notification
+from accounts.models import Notification, Message
 
 
 def sections_processor(request):
@@ -7,4 +7,8 @@ def sections_processor(request):
     cnt_notifcats = 0
     if request.user.is_authenticated:
         cnt_notifcats = Notification.objects.filter(user=request.user, is_seen=False).count()
-    return {'Sbets': Sbets, 'cnt_notifcats': cnt_notifcats}
+    cnt_meses = 0
+    if request.user.is_authenticated:
+        cnt_meses = Message.objects.filter(receiver=request.user, is_seen=0).count()
+
+    return {'Sbets': Sbets, 'cnt_notifcats': cnt_notifcats, 'cnt_meses': cnt_meses}

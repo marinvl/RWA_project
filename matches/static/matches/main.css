@@ -172,13 +172,13 @@ table {
 .table-danger,
 .table-danger > th,
 .table-danger > td {
-  background-color: #ee5f5b;
+  background-color: ##dd0000;
 }
 
 .table-success,
 .table-success > th,
 .table-success > td {
-  background-color: #62c462;
+  background-color: ##009900;
 }
 
 .table-secondary,
@@ -198,7 +198,7 @@ table {
 }
 
 .table-hover .table-warning:hover, .table-hover .table-warning:hover > th, .table-hover .table-warning:hover > td {
-  background-color: #df8505;
+  background-color: #800000;
 }
 
 .table-hover .table-primary:hover, .table-hover .table-primary:hover > th, .table-hover .table-primary:hover > td {
@@ -346,6 +346,10 @@ table {
   color: #b4b4b4;
 }
 
+.color-small-links {
+  color: #800000;
+}
+
 .color-radiant {
   color: #009900;
 }
@@ -354,3 +358,10 @@ table {
   color: #dd0000;
 }
 
+.bg_color-radiant{
+  background-color: #32b146;
+}
+
+.bg_color-dire {
+  background-color: #e22d4b;
+}
