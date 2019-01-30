@@ -89,10 +89,11 @@ class NotificationsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         notfs = Notification.objects.filter(user=self.request.user).order_by('-date')
+        notfs2 = notfs
         for notf in notfs:
             notf.is_seen = True
             notf.save()
-        return notfs
+        return notfs2
 
 
 @login_required
