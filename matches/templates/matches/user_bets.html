@@ -1,7 +1,7 @@
 {% extends "matches/base.html" %}
 {% block content %}
 	<h1 class="mb-3"><img class="rounded-circle article-img" src="{{ tags }}">{{ view.kwargs.username }}'s bets</h1>
-	
+
 	{% for bet in bets %}
 	<article class='media content-section jumbotron'>
 		<div class='media-body'>
@@ -80,7 +80,7 @@
 		<div class='media-body padding_info_betting'>
 			<div class='row'>
 				<div class='col'>
-					<h2 class='text-center'>{{ view.kwargs.username }}'s last 10 bets</h2><br>
+					<h2 class='text-center'>{{ view.kwargs.username }}'s last bets</h2><br>
 				</div>
 			</div>
 			<div class='row'>

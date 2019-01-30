@@ -1,6 +1,14 @@
 {% extends "matches/base.html" %}
 {% block content %}
-		{% for notification in notifications %}
-			{{ notification.text }} <br />
-		{% endfor %}
+	<div class="content-section jumbotron">
+	  	<div class="media-body padding_notification">
+	  		<h2>Your notifications:</h2>
+	  		{% for notification in notifications %}
+		  		<div class="alert alert-dismissible link-primary">
+				  <button type="button" class="close" data-dismiss="alert">&times;</button>
+				  <strong>{{ notification.text }}</strong>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock content %}
