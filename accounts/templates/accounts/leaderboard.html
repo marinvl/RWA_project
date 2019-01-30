@@ -6,29 +6,27 @@
         <h1>DOTABET Leaderboard</h1>
     </div>
     <article class="media content-section jumbotron">
-        <div class='media-body table-padding_leadreboard'>
-            <table class="table table-striped table-dark">
-                <thead>
+      <div class='media-body table-padding_leadreboard'>
+          <table class="table table-striped table-dark">
+              <thead>
+                <tr class="text-white">
+                  <th scope="col">#</th>
+                  <th scope="col">Real player</th>
+                  <th class='text-center' scope="col">Coins</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for profile in profiles %}
                   <tr class="text-white">
-                    <th scope="col">#</th>
-                    <th scope="col">Real player</th>
-                    <th class='text-center' scope="col">Coins</th>
+                      <th scope="row" class="counterCell"></th>
+                      <td><a class='text-white' href="{% url 'user-bets' profile.user.username %}"><img class="rounded-circle leaderboard-img" src="{{ profile.image.url }}">
+                      {{ profile.user.username }}</td></a>
+                      <td class='text-center'>{{ profile.coin }}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {% for profile in profiles %}
-                    <tr class="text-white">
-                        <th scope="row" class="counterCell"></th>
-                        <td><a class='text-white' href="{% url 'user-bets' profile.user.username %}"><img class="rounded-circle leaderboard-img" src="{{ profile.image.url }}">
-                        {{ profile.user.username }}</td></a>
-                        <td class='text-center'>{{ profile.coin }}</td>
-                    </tr>
-                   {% endfor %}
-               </tbody>
-           </table>
-       </div>
+                 {% endfor %}
+             </tbody>
+         </table>
+      </div>
     </article>
-
-
 {% endblock content %}
 

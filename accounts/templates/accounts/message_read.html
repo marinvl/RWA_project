@@ -2,11 +2,23 @@
 {% load static %}
 
 {% block content %}
-    <form method="GET" action="{% url 'new-message' message.sender.id %}">
-    	<input type="text" name="message_id" value="{{message.id}}" hidden>
-    	<input type=submit value="Answer">
-    </form>
-	From: {{message.sender}}<br />
-	Message: {{message.text}}
-
+	<div class="content-section jumbotron">
+	  	<div class="media-body padding_msg-read">
+	  		<div class="card text-white table-primary mb-3" style="max-width: 60rem;">
+			  <div class="card-header">From: {{message.sender}}</div>
+			  <div class="card-body">
+			  	<div>
+			  		<h4 class='card-header text-center'>{{message.title}}</h4>
+			  		<p class='card-header'>{{message.text}}</p>
+			  	</div><br>
+			  	<div class='float-right'>
+				  	<form method="GET" action="{% url 'new-message' message.sender.id %}">
+				    	<input type="text" name="message_id" value="{{message.id}}" hidden>
+				    	<input type=submit value="Answer">
+				    </form>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
 {% endblock content %}

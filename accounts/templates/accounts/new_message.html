@@ -3,15 +3,26 @@
 {% load static %}
 
 {% block content %}
-    
-	<form method="POST">
-		{% csrf_token %}
-		To: {{receiver}}
-		{{ form|crispy }}
-		<button class="btn btn-outline-info" type="submit">
-			Send
-		</button>
-	</form>
+    <div class="content-section jumbotron">
+	  	<div class="media-body padding_msg-write">
 
-
+	  		<h2>Send message:</h2>
+	  		<form method="POST">
+	  			<div class="card text-white table-primary mb-3" style="max-width: 50rem;">
+				  <div class="card-header">To: {{receiver}}</div>
+				  <div class="card-body">
+				  	<div>
+				  		{% csrf_token %}
+						{{ form|crispy }}
+				  	</div><br>
+				  	<div class='float-right'>
+					  	<button class="btn btn-outline-info" type="submit">
+							Send
+						</button>
+				    </div>
+				  </div>
+				</div>
+			</form>
+		</div>
+	</div>
 {% endblock content %}

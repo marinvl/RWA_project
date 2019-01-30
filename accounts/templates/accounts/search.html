@@ -1,14 +1,21 @@
 {% extends "matches/base.html" %}
 {% block content %}
-	{% for user in users %}
+	{% for useri in users %}
 		<article class="media content-section jumbotron">
-		  <img class="rounded-circle article-img" src="{{ user.profile.image.url }}">
+		  <img class="rounded-circle article-img" src="{{ useri.profile.image.url }}">
 		  <div class="media-body">
-		    <h2><a class="article-title text-grey" href="{% url 'user-bets' user.username %}">{{ user.username }}</a></h2>
-		    <a href="{% url 'follow' user.username %}">Follow</a>&nbsp;
-		    <a href="{% url 'new-message' user.id %}">Message</a>
-
-		    <p class="article-content text-white">{{ user.email }}</p>
+		    <h2><a class="article-title text-grey" href="{% url 'user-bets' useri.username %}">{{ useri.username }}</a></h2>
+		    {% if user.is_authenticated %}
+		    	{% if user.id != useri.id %}
+		    		{% if useri.id in following %}
+		    			<a href="{% url 'unfollow' useri.username %}">Unfollow</a>&nbsp;
+		    		{% else %}
+		    			<a href="{% url 'follow' useri.username %}">Follow</a>&nbsp;
+		    		{% endif %}
+				{% endif %}
+		    	<a href="{% url 'new-message' useri.id %}">Message</a>
+		    {% endif %}
+		    <p class="article-content text-white">{{ useri.email }}</p>
 		  </div>
 		</article>
 	{% endfor %}

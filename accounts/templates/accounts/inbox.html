@@ -3,10 +3,21 @@
 
 {% block content %}
     
-
-    {% for mes in meses %}
-      {{mes.title}}<a href="{% url 'read-message' mes.id %}">Read</a><br />
-    {% endfor %}
-
+	<div class="content-section jumbotron">
+	  	<div class="media-body padding_msg-read">
+	  		<h2>Inbox:</h2>
+	  		<div class="list-group ">
+	  			{% for mes in meses %}
+					<a href="{% url 'read-message' mes.id %}" class="list-group-item list-group-item-action flex-column align-items-start link-primary text-white">
+				    <div class="d-flex w-100 justify-content-between">
+				      <b><h5 class="mb-1 color-dire">From: {{mes.sender}}</h5></b>
+				      <small>{{mes.date}}</small>
+				    </div>
+				    <p class="mb-3">{{mes.title}}</p>
+				  </a>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 
 {% endblock content %}

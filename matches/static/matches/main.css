@@ -209,6 +209,16 @@ table {
   background-color: #6e757b;
 }
 
+.link-primary{
+  background-color: #3A3F44;
+}
+.link-primary:hover{
+  background-color: #2e3236;
+}
+.link-primary:visited{
+  background-color: #2e3236;
+}
+
 
 /*/////////////////////////////////////////////////////////////////////////////////*/
 /* IMAGE CSS */
@@ -331,6 +341,35 @@ table {
   padding-left: 50px
   padding-right: 50px;
 }
+.padding_msg-read {
+  padding-top: 20px;
+  padding-left: 150px;
+  padding-bottom: 20px;
+  padding-right: 150px
+}
+
+.padding_msg-write {
+  padding-top: 20px;
+  padding-left: 130px;
+  padding-bottom: 20px;
+  padding-right: 130px
+}
+
+.padding_notification {
+  padding-top: 20px;
+  padding-left: 50px;
+  padding-bottom: 20px;
+  padding-right: 50px
+}
+
+.padding_sidebar {
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px
+}
+
+
 
 .text-center {
   text-align: center;
