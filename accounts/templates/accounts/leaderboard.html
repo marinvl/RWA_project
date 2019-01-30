@@ -7,9 +7,9 @@
     </div>
     <article class="media content-section jumbotron">
         <div class='media-body table-padding_leadreboard'>
-            <table class="table table-hover">
+            <table class="table table-striped table-dark">
                 <thead>
-                  <tr class="table-primary text-white">
+                  <tr class="text-white">
                     <th scope="col">#</th>
                     <th scope="col">Real player</th>
                     <th class='text-center' scope="col">Coins</th>
@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                   {% for profile in profiles %}
-                    <tr class="table-secondary text-white">
+                    <tr class="text-white">
                         <th scope="row" class="counterCell"></th>
                         <td><a class='text-white' href="{% url 'user-bets' profile.user.username %}"><img class="rounded-circle leaderboard-img" src="{{ profile.image.url }}">
                         {{ profile.user.username }}</td></a>

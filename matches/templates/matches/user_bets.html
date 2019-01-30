@@ -2,69 +2,6 @@
 {% block content %}
 	<h1 class="mb-3"><img class="rounded-circle article-img" src="{{ tags }}">{{ view.kwargs.username }}'s bets</h1>
 	
-	<article class="media content-section jumbotron">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
-		<canvas id="myChart" width="400" height="200"></canvas>
-		
-		<script>
-		var ctx = document.getElementById("myChart").getContext('2d');
-		var myChart = new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: [
-				{% for bet in bets %}
-					{% if bet.result == 1%}
-					"{{ bet.match.r_team.team_name  }}",
-					{% else %}
-					"{{ bet.match.d_team.team_name  }}",
-					{% endif %}
-				{% endfor %}
-				],
-				datasets: [{
-					label: 'Coins',
-					data: [
-					{% for bet in bets %}
-						{% if  bet.match.winner == bet.result %}
-							+{{bet.coin}},
-						{% else %}
-							-{{bet.coin}},
-						{% endif %}
-					{% endfor %}
-					],
-					backgroundColor: [
-						{% for bet in bets %}
-							{% if  bet.match.winner == bet.result %}
-								"#002000",
-							{% else %}
-								'#200000',
-							{% endif %}
-						{% endfor %}
-					],
-					borderColor: [
-						{% for bet in bets %}
-							{% if  bet.match.winner == bet.result %}
-								"#00F000",
-							{% else %}
-								'#F00000',
-							{% endif %}
-						{% endfor %}
-					],
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero:true
-						}
-					}]
-				}
-			}
-		});
-		</script>
-	</article>
-	
 	{% for bet in bets %}
 	<article class='media content-section jumbotron'>
 		<div class='media-body'>
@@ -91,14 +28,28 @@
 			</div>
 			<hr/>
 			<a href="{% url 'match-details' bet.match_id %}">
-				<p class='article-content text-white text-center'>Score: {{ bet.match.r_score }} : {{ bet.match.d_score }}<br>Time: {{ bet.match.get_min }} : {{ bet.match.get_sec }}
-				</p>
+				<div class='row'>
+					<div class='col-4'>
+						{% if bet.match.winner == 1 %}
+							<i><h3 class='text-white'>winner</h3></i>
+						{% endif %}
+					</div>
+					<div class='col-4'>
+						<p class='article-content text-white text-center'>Score: {{ bet.match.r_score }} : {{ bet.match.d_score }}<br>Time: {{ bet.match.get_min }} : {{ bet.match.get_sec }}
+						</p>
+					</div>
+					<div class='col-4'>
+						{% if bet.match.winner == 2 %}
+							<i><h3 class='text-white text-right'>winner</h3></i>
+						{% endif %}
+					</div>
+				</div>
 				{% if bet.match.is_over == 1 and bet.match.winner == bet.result %}
-				<h2 class='text-center table-success'>{{bet.coin}}</h2>
+				<h2 class='text-center text-grey bg_color-radiant'>{{bet.coin}}</h2>
 				{% elif bet.match.is_over == 1 and bet.match.winner != bet.result %}
-				<h2 class='text-center table-danger'>{{bet.coin}}</h2>
+				<h2 class='text-center text-grey bg_color-dire'>{{bet.coin}}</h2>
 				{% else %}
-				<h2 class='text-center'>{{bet.coin}}</h2>
+				<h2 class='text-center text-grey'>{{bet.coin}}</h2>
 				{% endif %}
 			</a>
 		</div>
@@ -125,5 +76,84 @@
 		{% endif %}
 	{% endif %}
 	
+	<article class="media content-section jumbotron">
+		<div class='media-body padding_info_betting'>
+			<div class='row'>
+				<div class='col'>
+					<h2 class='text-center'>{{ view.kwargs.username }}'s last 10 bets</h2><br>
+				</div>
+			</div>
+			<div class='row'>
+				<div class='col'>
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+					<canvas id="myChart" width="400" height="200"></canvas>
+					
+					<script>
+					
+					var ctx = document.getElementById("myChart").getContext('2d');
+					var myChart = new Chart(ctx, {
+						type: 'line',
+						data: {
+							labels: [
+							{% for bet in last10 %}
+								{% if bet.result == 1%}
+								"{{ bet.match.r_team.team_name  }}",
+								{% else %}
+								"{{ bet.match.d_team.team_name  }}",
+								{% endif %}
+							{% endfor %}
+							],
+							datasets: [{
+								label: 'Coins',
+								data: [
+								{% for bet in last10 %}
+									{% if  bet.match.winner == bet.result %}
+										+{{bet.coin}},
+									{% else %}
+										-{{bet.coin}},
+									{% endif %}
+								{% endfor %}
+								],
+								backgroundColor: [
+									{% for bet in last10 %}
+										{% if  bet.match.winner == bet.result %}
+											"#002000",
+										{% else %}
+											'#200000',
+										{% endif %}
+									{% endfor %}
+								],
+								borderColor: [
+									{% for bet in last10 %}
+										{% if  bet.match.winner == bet.result %}
+											"#00F000",
+										{% else %}
+											'#F00000',
+										{% endif %}
+									{% endfor %}
+								],
+								borderWidth: 1
+							}]
+						},
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+										beginAtZero:true
+									}
+								}]
+							},
+							elements: {
+			            		line: {
+			                		tension: 0, // disables bezier curves
+			            		}
+			        		}
+						}
+					});
+					</script>
+				</div>
+			</div>
+		</div>
+	</article>
 	
 {% endblock content %}

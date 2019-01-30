@@ -20,20 +20,34 @@
 			<div class='row'>
 				<div class='col text-center'>
 					{% if match.duration == 0 %}
-					<h4>DRAFTING PHASE...</h4>
+					 <h4>DRAFTING PHASE...</h4>
 					{% elif match.duration <= 600 and match.is_over == 0 %}
-					<h4>Betting is possible only 10 minutes into the game!
-					<br>Make sure you make the right decision on time!</h4>
-					<div class="progress">
-						{% widthratio match.duration 600 100 as w %}
-						<div class="progress-bar bg-dark progress-bar-striped progress-bar-animated" style="width: {{w}}%;"></div>
-					</div> 
+  					<h4>Betting is possible only 10 minutes into the game!
+  					<br>Make sure you make the right decision on time!</h4>
+  					<div class="progress">
+  						{% widthratio match.duration 600 100 as w %}
+  						<div class="progress-bar bg-dark progress-bar-striped progress-bar-animated" style="width: {{w}}%;"></div>
+  					</div> 
 					{% elif match.duration and match.is_over == 0 %}
-					<h4>Betting for this match is closed!
-					<br>Enjoy the game, and good luck!</h4>
+  					<h4>Betting for this match is closed!
+  					<br>Enjoy the game, and good luck!</h4>
 					{% else %}
-					<h4>Betting for this match is closed!
-					<br>Game ended!</h4>
+            <div class='row'>
+              <div class='col-3'>
+                {% if match.winner == 1 %}
+                  <i><h3 class='text-white'>winner</h3></i>
+                {% endif %}
+              </div>
+              <div class='col-6'>
+                <h4>Betting for this match is closed!
+                <br>Game ended!</h4>
+              </div>
+              <div class='col-3'>
+                {% if match.winner == 2 %}
+                  <i><h3 class='text-white'>winner</h3></i>
+                {% endif %}
+              </div>
+            </div>
 					{% endif %}
 				</div>
 			</div>
@@ -306,7 +320,7 @@
 
         <article class='media content-section jumbotron'>
           <div class='media-body table-padding'>
-            <table class="table table-hover text-white text-center">
+            <table class="table text-white text-center table-hover">
               <thead class="thead-dark">
                 <tr>
                   <th scope="col">Hero</th>
@@ -321,9 +335,9 @@
               <tbody>
                   {%for stat in stats%}
                     {% if stat.side == 0 %}
-                      <tr class="table-success">
+                      <tr class="bg_color-radiant">
                     {% elif stat.side == 1 %}
-                      <tr class="table-danger">
+                      <tr class="bg_color-dire">
                     {% else %}
                       <tr>
                     {% endif %}
