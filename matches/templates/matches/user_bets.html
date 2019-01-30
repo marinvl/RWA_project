@@ -12,6 +12,7 @@
 			type: 'bar',
 			data: {
 				labels: [
+				"Total",
 				{% for bet in bets %}
 					{% if bet.result == 1%}
 					"{{ bet.match.r_team.team_name  }}",
@@ -25,6 +26,13 @@
 					data: [
 					{% for bet in bets %}
 						{% if  bet.match.winner == bet.result %}
+							+{{bet.coin}}
+						{% else %}
+							-{{bet.coin}}
+						{% endif %}
+					{% endfor %},
+					{% for bet in bets %}
+						{% if  bet.match.winner == bet.result %}
 							+{{bet.coin}},
 						{% else %}
 							-{{bet.coin}},
@@ -32,6 +40,7 @@
 					{% endfor %}
 					],
 					backgroundColor: [
+						"#000020",
 						{% for bet in bets %}
 							{% if  bet.match.winner == bet.result %}
 								"#002000",
@@ -41,6 +50,7 @@
 						{% endfor %}
 					],
 					borderColor: [
+						"#0000F0", 
 						{% for bet in bets %}
 							{% if  bet.match.winner == bet.result %}
 								"#00F000",
