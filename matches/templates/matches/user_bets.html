@@ -1,6 +1,23 @@
 {% extends "matches/base.html" %}
 {% block content %}
-	<h1 class="mb-3"><img class="rounded-circle article-img" src="{{ tags }}">{{ view.kwargs.username }}'s bets</h1>
+	<div class='row'>
+		<div class='col-1'>
+			<img class="rounded-circle article-img" src="{{ tags }}">
+		</div>
+		<div class='col'>
+			<h1 class="mb-3">{{ view.kwargs.username }}'s bets</h1>
+			{% if user.is_authenticated %}
+		    	{% if user.id != currentUser.id %}
+		    		{% if currentUser.id in following %}
+		    			<a href="{% url 'unfollow' currentUser.username %}">Unfollow</a>&nbsp;
+		    		{% else %}
+		    			<a href="{% url 'follow' currentUser.username %}">Follow</a>&nbsp;
+		    		{% endif %}
+				{% endif %}
+		    	<a href="{% url 'new-message' currentUser.id %}">Message</a>
+		    {% endif %}
+		</div>
+	</div><br>
 
 	{% for bet in bets %}
 	<article class='media content-section jumbotron'>
