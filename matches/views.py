@@ -91,7 +91,9 @@ class UserBetListView(ListView):
         context['last10'] = Bet.objects.filter(user=user).order_by('-date')[:10]
         context['current'] = user.profile.coin
         context['currentUser'] = user
-        context['following'] = Follower.objects.filter(follower=self.request.user).values_list('user_id', flat=True)
+        context['following'] = []
+        if self.request.user.is_authenticated:
+            Follower.objects.filter(follower=self.request.user).values_list('user_id', flat=True)
         return context
 
 
