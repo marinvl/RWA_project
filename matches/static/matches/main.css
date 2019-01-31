@@ -112,11 +112,11 @@ a.article-title:hover {
 /*/////////////////////////////////////////////////////////////////////////////////*/
 
 .bg-radiant {
-	background-color: #007200;
+	background-color: #32b146;
 }
 
 .bg-dire {
-	background-color: #a50000;
+	background-color: #e22d4b;
 }
 
 .td-border-black {
@@ -203,6 +203,11 @@ table {
   background-color: #3A3F44;
 }
 
+.table-primary:hover {
+	background-color: #222222;
+	border: 1px dashed #800000;
+}
+
 .table-hover .table-success:hover, .table-hover .table-success:hover > th, .table-hover .table-success:hover > td {
   background-color: #4fbd4f;
 }
@@ -260,9 +265,6 @@ table {
 .img_150 {
   width: 150%;
 }
-.img_90 {
-  width: 90%;
-}
 .img_75 {
   width: 75%;
 }
@@ -289,27 +291,36 @@ table {
 }
 
  /* Drafting stage */
-.img_pick_immersive {
+.img-pick-immersive {
 	width: 90%;
 	filter: brightness(120%);
 	border: 1px groove black;
 	border-radius: 10%;
 }
+.img-ban-immersive {
+	width: 90%;
+	filter: sepia(100%);
+	border: 1px groove black;
+	border-radius: 10%;
+}
+.img-ban-immersive:hover {
+	filter: sepia(0%);
+}
 
 /* Pick/Ban Header*/
-.img_pick {
+.img-pick {
 	width: 18%;
 	filter: brightness(120%);
 	border: 1px groove black;
 	border-radius: 10%;
 }
-.img_ban {
+.img-ban {
 	width: 15%;
 	filter: sepia(100%);
 	border: 1px groove black;
 	border-radius: 10%;
 }
-.img_ban:hover {
+.img-ban:hover {
 	filter: sepia(0%);
 }
 
