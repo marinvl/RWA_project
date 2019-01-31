@@ -17,14 +17,17 @@ ul {
 }
 
 a:link {
+  color: #dc3545;
   text-decoration: none;
 }
 
 a:visited {
+  color: #dc3545;
   text-decoration: none;
 }
 
 a:hover {
+  color: #32b146;
   text-decoration: none;
 }
 
@@ -203,10 +206,6 @@ table {
   background-color: #3A3F44;
 }
 
-.table-primary:hover {
-	background-color: #222222;
-	border: 1px dashed #800000;
-}
 
 .table-hover .table-success:hover, .table-hover .table-success:hover > th, .table-hover .table-success:hover > td {
   background-color: #4fbd4f;

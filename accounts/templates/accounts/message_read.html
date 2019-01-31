@@ -9,7 +9,7 @@
 			  <div class="card-body">
 			  	<div>
 			  		<h4 class='card-header text-center'>{{message.title}}</h4>
-			  		<p class='card-header'>{{message.text}}</p>
+			  		<textarea class='card-body' rows='10' cols='96' disabled>{{message.text}}</textarea>
 			  	</div><br>
 			  	<div class='float-right'>
 				  	<form method="GET" action="{% url 'new-message' message.sender.id %}">

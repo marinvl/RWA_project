@@ -26,13 +26,13 @@
 		</div>
 
 		<div class="col-3">
-			<div class="content-section jumbotron">
+			<div class="content-section jumbotron padding_sidebar">
 				<div>
 					<h2>Last bets</h2>
 				</div> 
 				<div class="list-group">
 				{% for sbet in Sbets %}
-					<a href="{% url 'match-details' sbet.match_id %}" class="list-group-item list-group-item-action flex-column align-items-start table-primary text-white">
+					<a href="{% url 'match-details' sbet.match_id %}" class="list-group-item list-group-item-action flex-column align-items-start link-primary text-white">
 					<div class="d-flex w-100 justify-content-between">
 						<h5 class="mb-1">{{sbet.user.username}}</h5>
 						<small>{{sbet.coin}}</small>
