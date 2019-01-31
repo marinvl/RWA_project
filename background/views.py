@@ -134,29 +134,6 @@ def api():
                     r_picks = radiant.get('picks')
                     d_picks = dire.get('picks')
 
-                    """if r_picks is not None and d_bans is not None:
-
-                        for pick in r_picks:
-                            hero_id = pick.get('hero_id')
-                            account_id = hero_acc.get('hero_id', 0)
-                            print(account_id)
-                            #print("R_Pick: " + str(match_id) + "    " + str(hero_id) + "    " + str(0) + "    " + str(account_id))
-                            hero = Hero.objects.get(pk=hero_id)
-                            rPlayer = Player.objects.get(pk=account_id)
-                            Pick.objects.update_or_create(match_id=match_id, hero=hero,
-                               defaults={'side': 0, 'player': rPlayer},)
-
-                        for pick in d_picks:
-                            hero_id = pick.get('hero_id')
-                            account_id = hero_acc.get('hero_id', 0)
-                            #print("D_Pick: " + str(match_id) + "    " + str(hero_id) + "    " + str(1) + "    " + str(account_id))
-                            hero = Hero.objects.get(pk=hero_id)
-                            dPlayer = Player.objects.get(pk=account_id)
-                            Pick.objects.update_or_create(match_id=match_id, hero=hero,
-                               defaults={'side': 1, 'player': dPlayer},)
-
-                        """
-
                     r_players = radiant.get('players')
                     d_players = dire.get('players')
 
@@ -284,55 +261,11 @@ def api():
                         item = Item.objects.get(pk=item5)
                         Item_Inventory.objects.update_or_create(match_id=match_id, player=Dplayer, slot=5, defaults={'item': item},)
     print("API DONE")
-    """dire_team = game.get('dire_team')
-        radiant_team = game.get('radiant_team')
-        match_id_var = game.get('match_id')
-        if dire_team is not None and radiant_team is not None:
-#            print(radiant_team.get('team_name') + "        " + dire_team.get('team_name') + " " + str(match_id_var))
-
-            r_team_var = radiant_team.get('team_name')
-            d_team_var = dire_team.get('team_name')
-
-            scoreboard = game.get('scoreboard')
-            if scoreboard is not None:
-                if scoreboard.get('duration') is not None:
-                    time_var = round(scoreboard.get('duration'))
-                else:
-                    time_var = 0
-
-                if scoreboard.get('radiant') is not None:
-                    scoreboard_radiant = scoreboard.get('radiant')
-                    if scoreboard_radiant.get('score') is not None:
-                        r_score_var = scoreboard_radiant.get('score')
-                    else:
-                        r_score_var = 0
-                else:
-                    r_score_var = 0
-
-                if scoreboard.get('dire') is not None:
-                    scoreboard_dire = scoreboard.get('dire')
-                    if scoreboard_dire.get('score') is not None:
-                        d_score_var = scoreboard_dire.get('score')
-                    else:
-                        d_score_var = 0
-                else:
-                    d_score_var = 0
-            else:
-                time_var = 0
-                r_score_var = 0
-                d_score_var = 0
-
-            print(r_team_var + "     " + r_team_var + " " + str(match_id_var) + " " + str(r_score_var) + " " + str(d_score_var) + str(time_var))
-            #Match.objects.create(match_id=int(match_id_var), r_team=r_team_var, d_team=d_team_var, r_score=int(r_score_var), d_score=int(d_score_var), duration=int(time_var), date=date_var)
-            Match.objects.update_or_create(
-                match_id=int(match_id_var),
-                defaults={'r_team': r_team_var, 'd_team': d_team_var, 'r_score': r_score_var, 'd_score': d_score_var, 'duration': time_var, 'date': date_var},)
-                """
 
 
 @background(schedule=10)
 def paycheck():
-    print("\n\n\nPAYCHECK\n\n\n")
+    print("PAYCHECK\n")
     date = timezone.now()
     non_payed_bets = Bet.objects.filter(is_payed=False)
 
@@ -368,7 +301,7 @@ def gameOver():
                 else:
                     match.winner = 2
                 match.save()
-                print("\nGAMEOVER\n")
+                print("GAMEOVER\n")
 
 
 @background(schedule=5)
