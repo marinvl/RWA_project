@@ -6,31 +6,33 @@
     <div class="row">
 		<div class="col-9">
 		{% for match in matches %}
-		<article class="media content-section jumbotron">
-			<div class='media-body'>
-				<h2>
-					<a class='article-title' href='#'></a>
-					<a href="{% url 'match-details' match.match_id %}">
-					<span class='float-left color-radiant'>{{ match.r_team.team_name }}</span>
-					<span class='float-right color-dire'>{{ match.d_team.team_name }}</span></a>
-				</h2>
-				<br /><hr />
-				<p class='article-content leaderboard-text-white text-center' id='edit'>Score: {{ match.r_score }} : {{ match.d_score }}
-				Time: <span id='min{{ forloop.counter }}'>{{ match.get_min }}</span> : <span id='sec{{ forloop.counter }}'>{{ match.get_sec }}</span></p>
-			</div>
-		</article>
-		<script>cnt={{ forloop.counter }}</script>
+			{% if match.r_team.team_name != 'Default bots' and match.r_team.team_name != 'BotExperiment' and match.r_team.team_name != 'PubSimulator' and match.r_team.team_name != 'Ranked Matchmaking AI' %}
+				<article class="media content-section jumbotron">
+					<div class='media-body'>
+						<h2>
+							<a class='article-title' href='#'></a>
+							<a href="{% url 'match-details' match.match_id %}">
+							<span class='float-left color-radiant'>{{ match.r_team.team_name }}</span>
+							<span class='float-right color-dire'>{{ match.d_team.team_name }}</span></a>
+						</h2>
+						<br /><hr />
+						<p class='article-content leaderboard-text-white text-center' id='edit'>Score: {{ match.r_score }} : {{ match.d_score }}
+						Time: <span id='min{{ forloop.counter }}'>{{ match.get_min }}</span> : <span id='sec{{ forloop.counter }}'>{{ match.get_sec }}</span></p>
+					</div>
+				</article>
+				<script>cnt={{ forloop.counter }}</script>
+			{% endif %}
 		{% endfor %}
 		</div>
 
 		<div class="col-3">
-			<div class="content-section jumbotron">
+			<div class="content-section jumbotron padding_sidebar">
 				<div>
 					<h2>Last bets</h2>
 				</div> 
 				<div class="list-group">
 				{% for sbet in Sbets %}
-					<a href="{% url 'match-details' sbet.match_id %}" class="list-group-item list-group-item-action flex-column align-items-start table-primary text-white">
+					<a href="{% url 'match-details' sbet.match_id %}" class="list-group-item list-group-item-action flex-column align-items-start link-primary text-white">
 					<div class="d-flex w-100 justify-content-between">
 						<h5 class="mb-1">{{sbet.user.username}}</h5>
 						<small>{{sbet.coin}}</small>

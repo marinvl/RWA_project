@@ -56,9 +56,9 @@ function api(){
 									"</span></h2>" +
 									"<br /> <hr />" +
 									"<p class='article-content' style='text-align: center;'>Score: " + r_score + " : " + d_score + "<br>Time " + time_min + " : " + time_sec + "<br />" +
-									"<a class='btn btn-outline-info mb-1' onclick='bet(" + match_id + "," + 1 + "," + cnt + ");'>Bet</a>" +
+									"<a class='btn btn-outline-danger mb-1' onclick='bet(" + match_id + "," + 1 + "," + cnt + ");'>Bet</a>" +
 									"<input type='text' placeholder='20' id='coin" + cnt + "'>" +
-									"<a class='btn btn-outline-info mb-1' onclick='bet(" + match_id + "," + 2 + "," + cnt++ + ");' >Bet</a></p>" +
+									"<a class='btn btn-outline-danger mb-1' onclick='bet(" + match_id + "," + 2 + "," + cnt++ + ");' >Bet</a></p>" +
 								"</div>" +
 							"</article>"
 
