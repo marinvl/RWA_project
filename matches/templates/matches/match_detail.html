@@ -8,9 +8,9 @@
 				</div>
 				<div class='col-4 flex-row d-flex justify-content-center'> <!-- Bet Controls -->
 				{% if match.duration <= 600 and match.is_over == 0 %}
-					<a class='btn btn-outline-info mx-auto' onclick='bet({{ match.match_id }},1);'>Bet</a>
+					<a class='btn btn-outline-danger mx-auto' onclick='bet({{ match.match_id }},1);'>Bet</a>
 					<input class="mx-auto" type='text' placeholder='20' id='coin'>
-					<a class='btn btn-outline-info mx-auto' onclick='bet({{ match.match_id }},2);'>Bet</a>
+					<a class='btn btn-outline-danger mx-auto' onclick='bet({{ match.match_id }},2);'>Bet</a>
 				{% endif %}
 				</div>
 				<div class='col-4'> <!-- Dire Team Name -->
@@ -64,7 +64,7 @@
 							<td class='pick-td_size'>
 							{% for pick in rpicks %}
 								{% if pick.slot == 0 %}
-								<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+								<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 								{% endif %}
 							{% endfor %}
 							</td>
@@ -73,7 +73,7 @@
 							<td class='pick-td_size'>
 							{% for pick in rpicks %}
 								{% if pick.slot == 1 %}
-								<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+								<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 								{% endif %}
 							{% endfor %}
 							</td>
@@ -82,7 +82,7 @@
 							<td class='pick-td_size'>
 							{% for pick in rpicks %}
 								{% if pick.slot == 2 %}
-								<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+								<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 								{% endif %}
 							{% endfor %}
 							</td>
@@ -91,7 +91,7 @@
 							<td class='pick-td_size'>
 							{% for pick in rpicks %}
 								{% if pick.slot == 3 %}
-								<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+								<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 								{% endif %}
 							{% endfor %}
 							</td>
@@ -100,7 +100,7 @@
 						  <td class='pick-td_size'>
 							{% for pick in rpicks %}
 							  {% if pick.slot == 4 %}
-								<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+								<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 							  {% endif %}
 							{% endfor %}
 						  </td>
@@ -115,7 +115,7 @@
 								<td class='pick-td_size'>
 								{% for pick in dpicks %}
 									{% if pick.slot == 0 %}
-									<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+									<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
@@ -124,7 +124,7 @@
 								<td class='pick-td_size'>
 								{% for pick in dpicks %}
 									{% if pick.slot == 1 %}
-									<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+									<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
@@ -133,7 +133,7 @@
 								<td class='pick-td_size'>
 								{% for pick in dpicks %}
 									{% if pick.slot == 2 %}
-									<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+									<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 								{% endif %}
 								{% endfor %}
 								</td>
@@ -142,7 +142,7 @@
 								<td class='pick-td_size'>
 								{% for pick in dpicks %}
 									{% if pick.slot == 3 %}
-									<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+									<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 								{% endif %}
 								{% endfor %}
 								</td>
@@ -151,7 +151,7 @@
 								<td class='pick-td_size'>
 								{% for pick in dpicks %}
 									{% if pick.slot == 4 %}
-									<img class='img_90' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+									<img class='img-pick-immersive' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
@@ -166,42 +166,42 @@
 								<td class='ban-td_size'>
 								{% for ban in rbans %}
 									{% if ban.slot == 0 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in rbans %}
 									{% if ban.slot == 1 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in rbans %}
 									{% if ban.slot == 2 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in rbans %}
 									{% if ban.slot == 3 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in rbans %}
 									{% if ban.slot == 4 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in rbans %}
 									{% if ban.slot == 5 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
@@ -214,42 +214,42 @@
 								<td class='ban-td_size'>
 								{% for ban in dbans %}
 									{% if ban.slot == 0 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in dbans %}
 									{% if ban.slot == 1 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in dbans %}
 									{% if ban.slot == 2 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in dbans %}
 									{% if ban.slot == 3 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in dbans %}
 									{% if ban.slot == 4 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
 								<td class='ban-td_size'>
 								{% for ban in dbans %}
 									{% if ban.slot == 5 %}
-									<img class='img_90' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+									<img class='img-ban-immersive' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 									{% endif %}
 								{% endfor %}
 								</td>
@@ -265,7 +265,7 @@
 						<div class='col'>
 						{%for pick in rpicks%}
 							{% if pick.hero.hero_id != 0 %}
-							<img class='img_pick float-left' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+							<img class='img-pick float-left' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 							{% endif %}
 						{% endfor %}
 						</div>
@@ -274,7 +274,7 @@
 						<div class='col'>
 						{%for ban in rbans%}
 							{% if ban.hero.hero_id != 0 %}
-							<img class='img_ban float-left' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+							<img class='img-ban float-left' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 							{% endif %}
 						{% endfor %}
 						</div>
@@ -294,7 +294,7 @@
 						<div class='col'>
 						{%for pick in dpicks%}
 							{% if pick.hero.hero_id != 0 %}
-							<img class='img_pick float-right' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
+							<img class='img-pick float-right' src="{{pick.hero.url_full_portrait}}" title="{{pick.hero.hero_name}}">
 							{% endif %}
 						{% endfor %}
 						</div>
@@ -303,7 +303,7 @@
 						<div class='col'>
 						{%for ban in dbans%}
 							{% if ban.hero.hero_id != 0 %}
-							<img class='img_ban float-right' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
+							<img class='img-ban float-right' src="{{ban.hero.url_full_portrait}}" title="{{ban.hero.hero_name}}">
 							{% endif %}
 						{% endfor %}
 						</div>
